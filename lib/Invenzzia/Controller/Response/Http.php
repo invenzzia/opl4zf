@@ -65,7 +65,7 @@ class Invenzzia_Controller_Response_Http extends Zend_Controller_Response_Abstra
 		{
 			$result = $cache->cache($opt, $view, $this->_templateMode);
 		}
-		$this->setBody($dfg = ob_end_flush());
+		$this->setBody(ob_get_clean());
 
 		return $result;
 	} // end render();

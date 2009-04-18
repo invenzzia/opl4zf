@@ -140,10 +140,18 @@ class Invenzzia_Form_Component implements Opt_Component_Interface
 		$zendView = Invenzzia_View::getInstance();
 
 		$helper = $this->_formElement->helper;
+		$helper2 = substr($helper, 4, strlen($helper)-4);
 		$opt = Opl_Registry::get('opt');
 
 		// Get the helper style.
-		$style = Opt_View::getTemplateVar('formStyle'.ucfirst($helper).'Valid');
+		if($this->_formElement->hasErrors())
+		{
+			$style = Opt_View::getTemplateVar('formStyle'.ucfirst($helper2).'Invalid');
+		}
+		else
+		{
+			$style = Opt_View::getTemplateVar('formStyle'.ucfirst($helper2).'Valid');
+		}
 		if(!is_null($style) && !isset($attributes['class']))
 		{
 			$attributes['class'] = $style;

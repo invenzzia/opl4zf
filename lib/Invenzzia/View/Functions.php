@@ -32,13 +32,13 @@ class Invenzzia_View_Functions
 	 */
 	public function url($args, $routeName = null)
 	{
-		if(is_array($path))
+		if(is_array($args))
 		{
 			return Invenzzia_View::getInstance()->url($args, $routeName);
 		}
 
 		// The standard string "name=val&name=val"
-		if($path[0] != '/')
+		if($args[0] != '/')
 		{
 			$items = array();
 			parse_str($args, $items);
@@ -47,7 +47,7 @@ class Invenzzia_View_Functions
 		else
 		{
 		// Nice string "/controller/action?name=val&name=val..."
-			$data = parse_url($path);
+			$data = parse_url($args);
 			$items = array();
 			parse_str($data['query'], $items);
 			if($data['path'] != '')
