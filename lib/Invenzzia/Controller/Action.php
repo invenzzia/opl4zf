@@ -46,7 +46,7 @@ class Invenzzia_Controller_Action extends Zend_Controller_Action
 	/**
 	 * This method is not used with Invenzzia view management.
 	 */
-	public function render()
+	public function render($action = null, $name = null, $noController = false)
 	{
 		require_once('Invenzzia/Controller/Exception.php');
 		throw new Invenzzia_Controller_Exception('Invenzzia_Controller_Action::render() - not supported.');

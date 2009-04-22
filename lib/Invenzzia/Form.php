@@ -26,9 +26,13 @@ class Invenzzia_Form extends Zend_Form
 	 * The internal ZF method to render the form. Here,
 	 * prepares the form elements to be sent to the template.
 	 *
+	 * Important note: we know the declaration throws an E_STRICT
+	 * warning, but this is an intended behaviour, as we need to
+	 * change the type of the method argument to Opt_View.
+	 *
 	 * @param Opt_View $view OPT View
 	 */
-	public function render(Opt_View $view)
+	public function render(Opt_View $view = null)
 	{
 		$fields = array();
 		foreach($this->_elements as $element)

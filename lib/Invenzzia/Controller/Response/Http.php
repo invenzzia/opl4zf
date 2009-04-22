@@ -87,10 +87,10 @@ class Invenzzia_Controller_Response_Http extends Zend_Controller_Response_Abstra
 	/**
 	 * Not used - throws an exception.
 	 *
+	 * @param Void $name
 	 * @param Void $content
-	 * @param Void $name optional
 	 */
-	public function prepend($content, $name = null)
+	public function prepend($name, $content)
 	{
 		require_once('Invenzzia/Controller/Exception.php');
 		throw new Invenzzia_Controller_Exception('Invenzzia_Controller_Response_Http::prepend() - not supported.');
