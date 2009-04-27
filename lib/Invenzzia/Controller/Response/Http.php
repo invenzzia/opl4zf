@@ -44,27 +44,18 @@ class Invenzzia_Controller_Response_Http extends Zend_Controller_Response_Abstra
 	 * @param Opt_View $view OPT View.
 	 * @param Opt_Cache_Hook_Interface|null $cache Optional caching system.
 	 */
-	public function render(Opt_View $view, Opt_Cache_Hook_Interface $cache = null)
+	public function render(Opt_View $view)
 	{
-		$opt = Opl_Registry::get('opt');
 		if(is_null($this->_templateMode))
 		{
-			$this->_templateMode = $opt->mode;
+			$this->_templateMode = $view->getMode();
 			ob_start();
 		}
-		elseif($this->_templateMode == OPT_XML_MODE)
+		elseif($this->_templateMode == Opt_Class::OPT_XML_MODE)
 		{
 			throw new Opt_OutputOverloaded_Exception;
 		}
-
-		if(!$cache instanceof Opt_Cache_Hook_Interface)
-		{
-			$result = $view->_parse($this, $this->_templateMode);
-		}
-		else
-		{
-			$result = $cache->cache($opt, $view, $this->_templateMode);
-		}
+		$result = $view->_parse($this, $this->_templateMode);
 		$this->setBody(ob_get_clean());
 
 		return $result;

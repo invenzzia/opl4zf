@@ -1,0 +1,111 @@
+Title: Installation
+
+----
+
+System requirements
+===================
+
+In order to use OPL port for Zend Framework, your PHP installation must meet all the requirements of both Zend Framework and Open Power Libs. The minimum PHP version is 5.2, but we recommend to use PHP 5.3 and newer, if possible. OPL and the port do not require any database or specific PHP modules installed.
+
+Library requirements
+====================
+
+In order to work, this port must be combined with two libraries:
+
+ - [Zend Framework](http://framework.zend.com) 1.7 or newer
+ - [Open Power Libs](http://www.invenzzia.org/en/projects/open-power-libraries) 2.0
+
+You need to download them from their websites on your own.
+
+Installation procedure
+======================
+
+Follow the steps below in order to install and integrate Zend Framework with OPL:
+
+1. Download the necessary archives from the project websites.
+2. Install *Zend Framework* according to the instructions that can be found on the Zend Framework website.
+3. Extract the downloaded Open Power Libs archive.
+4. Copy the **content** of the `/lib` directory in the extracted archive to `/lib` directory in your Zend Framework project structure.
+5. Download and extract the OPL port for Zend Framework. The archive contains the source code together with a sample application - the content is a valid Zend Framework project structure.
+6. Copy the `/lib/Invenzzia` directory with the contents from the OPL port extracted archive to `/lib/Invenzzia` in your project directory structure.
+7. Configure the `bootstrap.php` file.
+8. Write some action controllers that use the port.
+
+Bootstrap.php
+=============
+
+Below, you can find a sample `bootstrap.php` file that enables the port and allows to use OPL with Zend Framework.
+
+~~~~
+[php]
+<?php
+/**
+ * A sample application bootstrap file
+ */
+
+set_include_path(get_include_path().PATH_SEPARATOR.ROOT_DIR.'lib/');
+
+// Load the autoloaders.
+require('Zend/Loader.php');
+require('Opl/Opl/Base.php');
+
+// Autoloader initialization
+Opl_Loader::setDirectory(ROOT_DIR.'lib/');
+Opl_Loader::register();
+
+Zend_Loader::registerAutoload('Zend_Loader');
+
+try
+{
+	// Initialize the front controller.
+	$front = Zend_Controller_Front::getInstance();
+	$front->setParam('noErrorHandler', true);
+	$front->throwExceptions(true);
+	$front->setControllerDirectory(ROOT_DIR.'app/controllers/');
+
+	// Create the improved response object.
+	$response = new Invenzzia_Controller_Response_Http;
+	$front->setResponse($response);
+	
+	// Do not forget to disable the default view renderer or we'll get a mess.
+	$front->setParam('noViewRenderer', true);
+	$front->setParam('disableOutputBuffering', true);
+
+	// Note that OPT is initialized by Invenzzia_Layout, if you haven't done
+	// it manually. You can pass the OPT configuration as an array to the
+	// startMvc() method.
+	$layout = Invenzzia_Layout::startMvc(array('compileMode' => Opt_Class::CM_REBUILD, 'stripWhitespaces'=> false));
+	$layout->setViewPaths(ROOT_DIR.'app/views/', ROOT_DIR.'cache/');
+	$layout->setLayout('layout.tpl');
+
+	// Connect the layout to the Zend response.
+	$layout->setOutput($response);
+	$layout->setLayout('layout');
+
+	$front->dispatch();
+}
+catch(Opt_Exception $exception)
+{
+	$handler = new Opt_ErrorHandler;
+	$handler->display($exception);
+}
+catch(Opl_Exception $exception)
+{
+	$handler = new Opl_ErrorHandler;
+	$handler->display($exception);
+}
+catch(Zend_Exception $exception)
+{
+	$handler = new Invenzzia_ErrorHandler;
+	$handler->displayZend($exception);
+}
+~~~~
+
+In the beginning, we need to configure the OPL autoloader. It does not use the `include_path`, but provides its own methods to specify the paths in order to improve the performance. The OPL port classes may be loaded either by the Zend Framework or OPL autoloader. Later, you need to configure the front controller. We disable the options that are related to the view rendering and set Invenzzia response object. Finally we set up the `Invenzzia_Layout` component. Contrary to the original `Zend_Layout`, `Invenzzia_Layout` is an obligatory component. Open Power Template does not allow to concatenate freely the content parts and the layout component manages the template modularization system provided by OPT. Note that `Invenzzia_Layout` automatically creates the OPT main class and configures it.
+
+Finally, we capture the exceptions. Of course, we do not have to use the default OPL exception handlers, however they provide a lot of useful information on each exception that helps to find the problem and fix it.
+
+Conclusion
+==========
+
+As you can see, the installation was not very hard and was reduced to copying the files and adding some extra code to the `bootstrap.php` file. In the next chapters, we will show, how to use all the features of the port.
