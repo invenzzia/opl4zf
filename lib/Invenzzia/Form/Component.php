@@ -87,7 +87,7 @@ class Invenzzia_Form_Component implements Opt_Component_Interface
 	 *
 	 * @param Mixed $data
 	 */
-	public function setDatasource(&$data)
+	public function setDatasource($data)
 	{
 		/* null */
 	} // end setDatasource();
