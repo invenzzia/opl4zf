@@ -38,17 +38,11 @@ class Invenzzia_Mail extends Zend_Mail implements Opt_Output_Interface
 	 * @param Opt_View $view The view to be rendered.
 	 * @param Opt_Cache_Hook_Interface $cache The cache hook used for caching.
 	 */
-	public function render(Opt_View $view, Opt_Cache_Hook_Interface $cache = null)
+	public function render(Opt_View $view)
 	{
 		ob_start();
 
-		if(!$cache instanceof Opt_Cache_Hook_Interface)
-		{
-			$view->_parse($this, $this->_tpl->mode);
-			$this->setBodyHtml(ob_get_clean());
-		}
-		$cache->cache($this->_tpl, $view, $mode);
-
+		$view->_parse($this, $view->getMode());
 		$this->setBodyHtml(ob_get_clean());
 	} // end render();
 } // end Invenzzia_Mail;
