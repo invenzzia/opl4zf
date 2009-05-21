@@ -4,7 +4,7 @@
 <opt:dtd template="xhtml10transitional" />
 <html>
 	<head>
-		<title>Sample Zend Framework application</title>
+		<title>{$global.helper.title}</title>
 
 	</head>
 	<body>

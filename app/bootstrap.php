@@ -24,9 +24,9 @@ if(SYSTEM_ENV == 'debug')
 	Opl_Registry::setState('opl_extended_errors', true);
 }
 Opl_Loader::loadPaths($opl);
+Opl_Loader::addLibrary('Zend', array('directory' => ROOT_DIR.'lib/Zend/', 'handler' => null));
+Opl_Loader::addLibrary('Invenzzia', array('directory' => ROOT_DIR.'lib/Invenzzia/', 'handler' => null));
 Opl_Loader::register();
-
-Zend_Loader::registerAutoload('Zend_Loader');
 
 try
 {
@@ -49,6 +49,7 @@ try
 	// startMvc() method.
 	$layout = Invenzzia_Layout::startMvc(array('compileMode' => Opt_Class::CM_REBUILD, 'stripWhitespaces'=> false));
 	$layout->setViewPaths(ROOT_DIR.'app/views/', ROOT_DIR.'cache/');
+	$layout->getHelper('title')->appendTitle('Test');
 
 	// Connect the layout to the Zend response.
 	$layout->setOutput($response);

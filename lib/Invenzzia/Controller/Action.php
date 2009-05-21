@@ -35,11 +35,18 @@ class Invenzzia_Controller_Action extends Zend_Controller_Action
 	public $layout;
 
 	/**
+	 * The helper list.
+	 * @var Array
+	 */
+	public $helpers;
+
+	/**
 	 * Initializes the Opt_View object for the action.
 	 */
 	public function initView()
 	{
 		$this->layout = Invenzzia_Layout::getMvcInstance();
+		$this->helpers = $this->layout->getHelpers();
 		$this->view = new Opt_View;
 	} // end initView();
 

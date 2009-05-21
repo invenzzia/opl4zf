@@ -10,6 +10,7 @@ class IndexController extends Invenzzia_Controller_Action
 {
 	public function indexAction()
 	{
+		$this->helpers['title']->prependTitle('Some title');
 		$this->view->universe = 'HI UNIVERSE!';
 		$this->_forward('secondary');
 	} // end indexAction();
