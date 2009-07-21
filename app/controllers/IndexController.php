@@ -41,13 +41,13 @@ class IndexController extends Invenzzia_Controller_Action
 			{
 				$form->setAction('controller=index&action=form');
 				$form->populate($_POST);
-				$form->render($this->view);
+				$form->assignForm($this->view);
 			}
 		}
 		else
 		{
 			$form->setAction('controller=index&action=form');
-			$form->render($this->view);
+			$form->assignForm($this->view);
 		}
 	} // end formAction();
 } // end IndexController;
@@ -56,24 +56,24 @@ class testForm extends Invenzzia_Form
 {
 	public function __construct( $options = null )
 	{
-		parent::__construct( $options );
+		parent::__construct($options);
 		$email = $this->createElement( 'text', 'email' );
 		$email->setLabel( 'E-mail' )
 				  ->setRequired( true )
 				  ->addValidator('NotEmpty')
 				  ->addValidator(new Zend_Validate_EmailAddress(Zend_Validate_Hostname::ALLOW_LOCAL));
-		$this->addElement( $email );
+		$this->addElement($email);
 
 		$firstname = $this->createElement( 'text', 'firstname' );
 		$firstname->setLabel( 'First name' )
 				  ->setRequired( true )
 				  ->addValidator('NotEmpty');
-		$this->addElement( $firstname );
+		$this->addElement($firstname);
 
 		$surname = $this->createElement( 'text', 'surname' );
 		$surname->setLabel( 'Last name' )
 				->setRequired( true )
 				->addValidator('NotEmpty');
-		$this->addElement( $surname );
+		$this->addElement($surname);
 	} // end __construct();
 } // end testForm;

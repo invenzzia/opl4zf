@@ -21,22 +21,77 @@
  * @copyright Copyright (c) Invenzzia Group 2009
  * @license http://www.invenzzia.org/license/new-bsd New BSD License
  */
-class Invenzzia_View extends Zend_View
+class Invenzzia_View
 {
-	static private $_instance = null;
+	/**
+	 * The helper list.
+	 * @var Array
+	 */
+	static private $_helpers = array();
+
+
+	static public function initOpt(Opt_Class $opt)
+	{
+		Opl_Loader::mapAbsolute('Opt_Instruction_Url', 'Invenzzia/View/Url.php');
+		$opt->register(Opt_Class::OPT_INSTRUCTION, 'Url');
+		$opt->register(Opt_Class::PHP_FUNCTION, 'printf', 'sprintf');
+		$opt->register(Opt_Class::PHP_FUNCTION, 'url', 'Invenzzia_View_Functions::url');
+		$opt->register(Opt_Class::PHP_FUNCTION, 'zend', 'Invenzzia_Layout::getMvcInstance()->getZendView()');
+
+		self::$_helpers['title'] = new Invenzzia_View_Helper_Title;
+		self::$_helpers['headscript'] = new Invenzzia_View_Helper_HeadScript;
+		self::$_helpers['headstyle'] = new Invenzzia_View_Helper_HeadStyle;
+	} // end initOpt();
+
+	static public function setTranslation(Zend_Translate $translation = null)
+	{
+		$opt = Opl_Registry::get('opt');
+		if($translation === null)
+		{
+			$opt->backticks = null;
+		}
+		else
+		{
+			$opt->backticks = array($translation, '_');
+		}
+	} // end setTranslation();
+
+	static public function setNavigation(Zend_Navigation_Container $container = null)
+	{
+		Opt_View::assign('navigation', $container);
+	} // end setNavigation();
 
 	/**
-	 * Returns the instance of Zend_View for helper access purposes.
+	 * Adds a new template helper to the system.
 	 *
-	 * @static
-	 * @return Zend_View
+	 * @param String $name The helper identifier
+	 * @param Object $helper The helper.
 	 */
-	static public function getInstance()
+	static public function addHelper($name, $helper)
 	{
-		if(is_null(self::$_instance))
+		self::$_helpers[$name] = $helper;
+	} // end addHelper();
+
+	/**
+	 * Returns the helper list.
+	 * @return Array
+	 */
+	static public function getHelpers()
+	{
+		return self::$_helpers;
+	} // end getHelpers();
+
+	/**
+	 * Returns the specified helper.
+	 * @param String $helper The helper name
+	 * @return Object
+	 */
+	static public function getHelper($title)
+	{
+		if(!isset(self::$_helpers[$title]))
 		{
-			self::$_instance = new self();
+			throw new Invenzzia_View_Exception('The helper "'.$title.'" does not exist.');
 		}
-		return self::$_instance;
-	} // end getInstance();
+		return self::$_helpers[$title];
+	} // end getHelper();
 } // end Invenzzia_View;

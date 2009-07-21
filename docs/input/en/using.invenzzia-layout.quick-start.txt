@@ -1,0 +1,104 @@
+Title: Quick start
+
+----
+
+In this chapter, we are going to show, how to use the *Invenzzia_Layout* component with Zend Framework.
+
+Layouts
+=======
+
+First, you need a main template called layout. Its purpose is to define the basic structure of the output HTML code produced by your application. Invenzzia_Layout creates an `Opt_View` for it which can be used to assign the data to the template variables and caching. Because the template is parsed by OPT, you may use there anything you have registered in OPT.
+
+Below, you can find a sample layout template, `layout.tpl` that could go to `/app/views` directory:
+
+~~~~
+[xml]
+<?xml version="1.0" ?>
+<opt:root>
+<opt:prolog version="1.0" ?>
+<opt:dtd template="xhtml10transitional" />
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>My Site</title>
+</head>
+<body>
+	<!-- retrieve various layout variables -->
+	<p>{$foo}</p>
+	<p>{$bar}</p>
+	
+	<!-- fetch the views in the 'content' placeholder -->
+	<opt:section name="content">
+		<opt:include from="content">
+			<p class="error">Sorry, the requested template has not been found.</p>
+		</opt:include>
+	</opt:section>
+</body>
+</html>
+</opt:root>
+~~~~
+
+To render the views in the placeholders, we use ordinary OPT sections and `opt:include`. The second instruction allows us to define a message displayed, if the requested template cannot be loaded. It can be used for debug purposes.
+
+Invenzzia_Layout initialization
+===============================
+
+Invenzzia_Layout is build upon Open Power Template and initializes the template engine automatically. `Invenzzia_Layout::startMvc()` creates an instance of Invenzzia_Layout with any extra arguments for Open Power Template. We have to specify the view paths, too: one for the source templates and one for the compiled ones:
+
+~~~~
+[php]
+$layout = Invenzzia_Layout::startMvc(array('stripWhitespaces'=> false));
+$layout->setViewPaths(ROOT_DIR.'app/views/', ROOT_DIR.'cache/compiled/');
+~~~~
+
+To finalize the initialization, we also need to connect the response object and select the layout template.
+
+> [important]
+> Open Power Template uses output systems to render the content. Thus, you are allowed to use the response objects that are compatible with the `Opt_Output_Interface`. The port provides a ready wrapper for the original Zend Framework's HTTP response class.
+
+~~~~
+[php]
+$front = Zend_Controller_Front::getInstance();
+
+// Invenzzia_Layout initialization here.
+
+$response = new Invenzzia_Controller_Response_Http;
+$front->setResponse($response);
+$layout->setOutput($response);
+$layout->setLayout('layout');
+~~~~
+
+`Invenzzia_Layout::setLayout()` method sets the used layout template from the `/app/views` directory. The template name is written **without** the file extension (`.tpl`).
+
+Actions
+=======
+
+Invenzzia_Layout creates and initializes the view objects for the actions automatically. They are available out-of-the-box and mapped to the `/app/view/controllerName/actionName.tpl` template by default, and assigned to the `content` placeholder. If these assumptions suit you, your job is to assign the data to the view:
+
+~~~~
+[php]
+
+class someController
+{
+	public function fooAction()
+	{
+		$this->view->myVariable = 'foo';
+	} // end fooAction();
+	
+	public function barAction()
+	{
+		$this->view->myVariable = 'bar';
+	} // end barAction();
+} // end someController;
+~~~~
+
+As the OPT views provide separate variable scopes for each, you do not have worry about the naming collisions between the template variables. A sample template for the first action: `/app/views/some/foo.tpl`:
+
+~~~~
+[xml]
+<?xml version="1.0" ?>
+<opt:root>
+	<p>Hi universe!</p>
+	<p>{$myVariable}</p>
+</opt:root>
+~~~~

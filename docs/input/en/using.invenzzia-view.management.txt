@@ -1,0 +1,35 @@
+Title: Managing helpers
+
+----
+
+A helper can be any PHP object. We can assign it to the views with:
+
+~~~~
+[php]
+Invenzzia_View::addHelper('helperName', $helperObject);
+~~~~
+
+It will be later available in actions:
+
+~~~~
+[php]
+public function someAction()
+{
+	$this->_helpers['helperName'];
+	Invenzzia_View::getHelper('helperName');
+} // end someAction();
+~~~~
+
+and in views:
+
+~~~~
+[xml]
+<p>{$global.helper.helperName}</p>
+~~~~
+
+To get the list of all the helpers, we can use:
+
+~~~~
+[php]
+Invenzzia_View::getHelpers();
+~~~~

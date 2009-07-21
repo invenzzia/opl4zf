@@ -59,12 +59,6 @@ class Invenzzia_Layout
 	 */
 	private $_layoutName = 'layout';
 
-	/**
-	 * The helper list.
-	 * @var Array
-	 */
-	private $_helpers = array();
-
 
 	/**
 	 * Initializes Invenzzia_Layout with MVC support.
@@ -116,12 +110,7 @@ class Invenzzia_Layout
 				}
 			}
 		}
-		Opl_Loader::mapAbsolute('Opt_Instruction_Url', 'Invenzzia/View/Url.php');
-		$opt->register(Opt_Class::OPT_INSTRUCTION, 'Url');
-		$opt->register(Opt_Class::PHP_FUNCTION, 'url', 'Invenzzia_View_Functions::url');
-		$opt->register(Opt_Class::PHP_FUNCTION, 'zend', 'Invenzzia_Layout::getMvcInstance()->getZendView()');
-
-		self::$_mvc->_helpers['title'] = new Invenzzia_View_Helper_Title;
+		Invenzzia_View::initOpt($opt);
 
 		return self::$_mvc;
 	} // end startMvc();
@@ -154,40 +143,6 @@ class Invenzzia_Layout
 
 		self::$_mvc = null;
 	} // end resetMvcInstance();
-
-	/**
-	 * Adds a new template helper to the system.
-	 *
-	 * @param String $name The helper identifier
-	 * @param Object $helper The helper.
-	 */
-	public function addHelper($name, $helper)
-	{
-		$this->_helpers[$name] = $helper;
-	} // end addHelper();
-
-	/**
-	 * Returns the helper list.
-	 * @return Array
-	 */
-	public function getHelpers()
-	{
-		return $this->_helpers;
-	} // end getHelpers();
-
-	/**
-	 * Returns the specified helper.
-	 * @param String $helper The helper name
-	 * @return Object
-	 */
-	public function getHelper($title)
-	{
-		if(!isset($this->_helpers[$title]))
-		{
-			throw new Invenzzia_View_Exception('The helper "'.$title.'" does not exist.');
-		}
-		return $this->_helpers[$title];
-	} // end getHelpers();
 
 	/**
 	 * Disables the layout services. The programmer must render the views
@@ -366,7 +321,7 @@ class Invenzzia_Layout
 			$this->_output = new Opt_Output_Http;
 		}
 
-		Opt_View::assignGlobal('helper', $this->_helpers);
+		Opt_View::assignGlobal('helper', Invenzzia_View::getHelpers());
 		foreach($this->_placeholders as $name => &$placeholder)
 		{
 			$data = array();

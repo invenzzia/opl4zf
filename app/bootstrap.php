@@ -49,7 +49,7 @@ try
 	// startMvc() method.
 	$layout = Invenzzia_Layout::startMvc(array('compileMode' => Opt_Class::CM_REBUILD, 'stripWhitespaces'=> false));
 	$layout->setViewPaths(ROOT_DIR.'app/views/', ROOT_DIR.'cache/');
-	$layout->getHelper('title')->appendTitle('Test');
+	Invenzzia_View::getHelper('title')->appendTitle('Test');
 
 	// Connect the layout to the Zend response.
 	$layout->setOutput($response);

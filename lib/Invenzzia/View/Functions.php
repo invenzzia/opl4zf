@@ -32,9 +32,10 @@ class Invenzzia_View_Functions
 	 */
 	public function url($args, $routeName = null)
 	{
+		$router = Zend_Controller_Front::getInstance()->getRouter();
 		if(is_array($args))
 		{
-			return Invenzzia_View::getInstance()->url($args, $routeName);
+			return $router->assemble($args, $routeName, false, true);
 		}
 
 		// The standard string "name=val&name=val"
@@ -42,7 +43,7 @@ class Invenzzia_View_Functions
 		{
 			$items = array();
 			parse_str($args, $items);
-			return Invenzzia_View::getInstance()->url($items, $routeName);
+			return $router->assemble($items, $routeName, false, true);
 		}
 		else
 		{
@@ -63,7 +64,7 @@ class Invenzzia_View_Functions
 					$items['action'] = $data[2];
 				}
 			}
-			return Invenzzia_View::getInstance()->url($items, $routeName);
+			return $router->assemble($items, $routeName, false, true);
 		}
 	} // end url();
 } // end Invenzzia_View_Functions();

@@ -1,0 +1,71 @@
+Title: Advanced use
+
+----
+
+Modifying the default action view settings
+==========================================
+
+The default action views are initialized to the `controllerName/actionName.tpl` file and assigned to the `content` placeholder. However, we may freely modify these settings:
+
+~~~~
+[php]
+public function fooAction()
+{
+	// Change the default template name
+	$this->view->setTemplate('foobar.tpl');
+	
+	// Change the default placeholder
+	$this->layout->appendView($this->view, 'newPlaceholder');
+} // end fooAction();
+~~~~
+
+The new placeholders do not need to be initialized, however they need to be displayed somewhere similarly to the default one, for example:
+
+~~~~
+[xml]
+<opt:section name="newPlaceholder">
+<div>
+	<opt:include from="newPlaceholder" />
+</div>
+</opt:section>
+~~~~
+
+To prepend the view to the beginning of a placeholder, we have to use the `Invenzzia_Layout::prependView()` method:
+
+~~~~
+[php]
+$this->layout->prependView($this->view, 'newPlaceholder');
+~~~~
+
+Obtaining the layout view
+=========================
+
+To assign the data to the main template, we need to have an access for the layout view object. It can be obtained directly from the layout manager:
+
+~~~~
+[php]
+$layout = Invenzzia_Layout::getMvcInstance();
+
+$layoutView = $layout->getLayout();
+$layoutView->someVariable = 'foo';
+~~~~
+
+Helper management
+=================
+
+The view helpers in the port can be divided into three groups:
+
++ Template-side helpers
++ Action- and template-side helpers
++ Zend_View helpers
+
+The first and the last group are handled directly by OPT, whereas the second one needs a support from the library API to be accessible from the action level. Invenzzia_Layout provides a centralized management for these helpers. The `Invenzzia_Layout::addHelper($name, $helper)` and `Invenzzia_Layout::getHelper($name)` can be used to register and obtain the helpers from the system:
+
+~~~~
+[php]
+$layout = Invenzzia_Layout::getMvcInstance();
+$layout->addHelper('foo', new helperClass());
+
+$helper = $layout->getHelper('foo');
+$helper->doSomething();
+~~~~
