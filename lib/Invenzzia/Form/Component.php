@@ -146,11 +146,11 @@ class Invenzzia_Form_Component implements Opt_Component_Interface
 		// Get the helper style.
 		if($this->_formElement->hasErrors())
 		{
-			$style = Opt_View::getTemplateVar('formStyle'.ucfirst($helper2).'Invalid');
+			$style = $this->_view->getTemplateVar('formStyle'.ucfirst($helper2).'Invalid');
 		}
 		else
 		{
-			$style = Opt_View::getTemplateVar('formStyle'.ucfirst($helper2).'Valid');
+			$style = $this->_view->getTemplateVar('formStyle'.ucfirst($helper2).'Valid');
 		}
 		if(!is_null($style) && !isset($attributes['class']))
 		{
