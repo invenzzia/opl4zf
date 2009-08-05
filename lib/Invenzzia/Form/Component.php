@@ -137,7 +137,7 @@ class Invenzzia_Form_Component implements Opt_Component_Interface
 	public function display($attributes = array())
 	{
 		$layout = Invenzzia_Layout::getMvcInstance();
-		$zendView = Invenzzia_View::getInstance();
+		$zendView = Invenzzia_View::getZendView();
 
 		$helper = $this->_formElement->helper;
 		$helper2 = substr($helper, 4, strlen($helper)-4);

@@ -17,8 +17,10 @@ class IndexController extends Invenzzia_Controller_Action
 
 	public function secondaryAction()
 	{
+		$layout = Invenzzia_Layout::getMvcInstance();
+
 		$this->view->test = 'Foo';
-		$this->layout->appendView($this->view, 'secondary');
+		$layout->appendView($this->view, 'secondary');
 		$this->_forward('third');
 	} // end secondaryAction();
 

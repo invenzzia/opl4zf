@@ -25,24 +25,55 @@ class Invenzzia_View
 {
 	/**
 	 * The helper list.
+	 * @static
 	 * @var Array
 	 */
 	static private $_helpers = array();
 
+	/**
+	 * Zend_View used for obtaining helpers.
+	 * @static
+	 * @var Zend_View
+	 */
+	static private $_zendView;
 
+	/**
+	 * Initializes the OPT main object.
+	 * @static
+	 * @param Opt_Class $opt The main object to initialize.
+	 */
 	static public function initOpt(Opt_Class $opt)
 	{
 		Opl_Loader::mapAbsolute('Opt_Instruction_Url', 'Invenzzia/View/Url.php');
 		$opt->register(Opt_Class::OPT_INSTRUCTION, 'Url');
 		$opt->register(Opt_Class::PHP_FUNCTION, 'printf', 'sprintf');
 		$opt->register(Opt_Class::PHP_FUNCTION, 'url', 'Invenzzia_View_Functions::url');
-		$opt->register(Opt_Class::PHP_FUNCTION, 'zend', 'Invenzzia_Layout::getMvcInstance()->getZendView()');
+		$opt->register(Opt_Class::PHP_FUNCTION, 'zend', 'Invenzzia_View::getZendView');
 
 		self::$_helpers['title'] = new Invenzzia_View_Helper_Title;
 		self::$_helpers['headscript'] = new Invenzzia_View_Helper_HeadScript;
 		self::$_helpers['headstyle'] = new Invenzzia_View_Helper_HeadStyle;
 	} // end initOpt();
 
+	/**
+	 * Gets the Zend_View object.
+	 * @static
+	 * @return Zend_View
+	 */
+	static public function getZendView()
+	{
+		if(self::$_zendView === null)
+		{
+			self::$_zendView = new Zend_View();
+		}
+		return self::$_zendView;
+	} // end getZendView();
+
+	/**
+	 * Sets the translation interface.
+	 * @static
+	 * @param Zend_Translate $translation
+	 */
 	static public function setTranslation(Zend_Translate $translation = null)
 	{
 		$opt = Opl_Registry::get('opt');
@@ -56,6 +87,11 @@ class Invenzzia_View
 		}
 	} // end setTranslation();
 
+	/**
+	 * Sets the navigation object
+	 * @static
+	 * @param Zend_Navigation_Container $container
+	 */
 	static public function setNavigation(Zend_Navigation_Container $container = null)
 	{
 		Opt_View::assign('navigation', $container);
@@ -64,6 +100,7 @@ class Invenzzia_View
 	/**
 	 * Adds a new template helper to the system.
 	 *
+	 * @static
 	 * @param String $name The helper identifier
 	 * @param Object $helper The helper.
 	 */
@@ -74,6 +111,7 @@ class Invenzzia_View
 
 	/**
 	 * Returns the helper list.
+	 * @static
 	 * @return Array
 	 */
 	static public function getHelpers()
@@ -83,6 +121,7 @@ class Invenzzia_View
 
 	/**
 	 * Returns the specified helper.
+	 * @static
 	 * @param String $helper The helper name
 	 * @return Object
 	 */
