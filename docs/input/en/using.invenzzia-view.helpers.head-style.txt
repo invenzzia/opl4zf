@@ -1,0 +1,7 @@
+Title: headStyle
+Construct: helper
+SeeAlso:
+ - using.invenzzia-view.helpers.head-script
+
+----
+

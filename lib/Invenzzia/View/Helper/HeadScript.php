@@ -29,6 +29,14 @@ class Invenzzia_View_Helper_HeadScript extends Invenzzia_View_Helper_Container
 	protected $_acceptedAttributes = array('type', 'charset', 'defer', 'language', 'src');
 
 	/**
+	 * Initializes the helper.
+	 */
+	public function initHelper()
+	{
+		Opt_View::setFormatGlobal('headScript', 'InvenzziaDefault/Array', false);
+	} // end initHelper();
+
+	/**
 	 * Prepends a new external script file to the script list. The file is the
 	 * remote URL to the script.
 	 *

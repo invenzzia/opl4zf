@@ -4,10 +4,10 @@
 	<p>The HeadStyle helper. <a parse:href="url('/helpers/index')">Back</a></p>
 
 	<p>Example 1 - direct access to the helper.</p>
-	<p>{u:$global.helper.headstyle}</p>
+	<p>{u:$helper.headStyle}</p>
 
 	<p>Example 2 - OPT-controller access.</p>
-	<opt:selector name="style" datasource="$global.helper.headstyle">
+	<opt:selector name="headStyle">
 		<opt:standard>
 			<p>Aliases a group of template-defined styles with the name "standard".</p>
 		</opt:standard>
@@ -15,10 +15,10 @@
 			<p>Aliases a group of template-defined styles with the name "printable".</p>
 		</opt:printable>
 		<opt:file>
-			<p>Links an action-defined file: {$style.file}</p>
+			<p>Links an action-defined file: {$headStyle.file}</p>
 		</opt:file>
 		<opt:style>
-			<p>Links an action-defined style: {$style.style}</p>
+			<p>Links an action-defined style: {$headStyle.style}</p>
 		</opt:style>
 	</opt:selector>
 </opt:root>

@@ -29,6 +29,14 @@ class Invenzzia_View_Helper_HeadStyle extends Invenzzia_View_Helper_Container
 	protected $_acceptedAttributes = array('type', 'lang', 'dir', 'media', 'title', 'href');
 
 	/**
+	 * Initializes the helper.
+	 */
+	public function initHelper()
+	{
+		Opt_View::setFormatGlobal('headStyle', 'InvenzziaDefault/Array', false);
+	} // end initHelper();
+
+	/**
 	 * Prepends a new external script file to the script list. The file is the
 	 * remote URL to the script.
 	 *

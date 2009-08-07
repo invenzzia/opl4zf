@@ -320,8 +320,6 @@ class Invenzzia_Layout
 		{
 			$this->_output = new Opt_Output_Http;
 		}
-
-		Opt_View::assignGlobal('helper', Invenzzia_View::getHelpers());
 		foreach($this->_placeholders as $name => &$placeholder)
 		{
 			$data = array();

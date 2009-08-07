@@ -13,7 +13,7 @@
  * $Id$
  */
 
-class Invenzzia_View_Helper_Title
+class Invenzzia_View_Helper_Title extends Invenzzia_View_Helper_Abstract
 {
 	/**
 	 * The list of title parts
@@ -31,6 +31,14 @@ class Invenzzia_View_Helper_Title
 	 * @var String
 	 */
 	private $_default = 'Default title';
+
+	/**
+	 * Initializes the helper.
+	 */
+	public function initHelper()
+	{
+		Opt_View::setFormatGlobal('title', 'InvenzziaDefault/Array', false);
+	} // end initHelper();
 
 	/**
 	 * Sets the default title
@@ -102,4 +110,13 @@ class Invenzzia_View_Helper_Title
 		}
 		return implode($this->_separator, $this->_title);
 	} // end getTitle();
+
+	/**
+	 * Returns the data for OPT sections. Called by the data format.
+	 * @return Array
+	 */
+	public function toArray()
+	{
+		return $this->_title;
+	} // end toArray();
 } // end Invenzzia_View_Helper_Title;

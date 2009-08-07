@@ -46,13 +46,19 @@ class Invenzzia_View
 	{
 		Opl_Loader::mapAbsolute('Opt_Instruction_Url', 'Invenzzia/View/Url.php');
 		$opt->register(Opt_Class::OPT_INSTRUCTION, 'Url');
+		$opt->register(Opt_Class::OPT_FORMAT, 'InvenzziaDefault', 'Invenzzia_View_Format_Default');
 		$opt->register(Opt_Class::PHP_FUNCTION, 'printf', 'sprintf');
 		$opt->register(Opt_Class::PHP_FUNCTION, 'url', 'Invenzzia_View_Functions::url');
 		$opt->register(Opt_Class::PHP_FUNCTION, 'zend', 'Invenzzia_View::getZendView');
 
-		self::$_helpers['title'] = new Invenzzia_View_Helper_Title;
-		self::$_helpers['headscript'] = new Invenzzia_View_Helper_HeadScript;
-		self::$_helpers['headstyle'] = new Invenzzia_View_Helper_HeadStyle;
+		$helperBroker = Invenzzia_View_HelperBroker::getInstance();
+		$helperBroker->addHelper('title', new Invenzzia_View_Helper_Title);
+		$helperBroker->addHelper('headScript', new Invenzzia_View_Helper_HeadScript);
+		$helperBroker->addHelper('headStyle', new Invenzzia_View_Helper_HeadStyle);
+		$helperBroker->addHelper('flashMessage', new Invenzzia_View_Helper_FlashMessage);
+
+		Opt_View::assignGlobal('helper', $helperBroker);
+		Opt_View::setFormatGlobal('helper', 'InvenzziaDefault', false);
 	} // end initOpt();
 
 	/**
@@ -96,41 +102,4 @@ class Invenzzia_View
 	{
 		Opt_View::assign('navigation', $container);
 	} // end setNavigation();
-
-	/**
-	 * Adds a new template helper to the system.
-	 *
-	 * @static
-	 * @param String $name The helper identifier
-	 * @param Object $helper The helper.
-	 */
-	static public function addHelper($name, $helper)
-	{
-		self::$_helpers[$name] = $helper;
-	} // end addHelper();
-
-	/**
-	 * Returns the helper list.
-	 * @static
-	 * @return Array
-	 */
-	static public function getHelpers()
-	{
-		return self::$_helpers;
-	} // end getHelpers();
-
-	/**
-	 * Returns the specified helper.
-	 * @static
-	 * @param String $helper The helper name
-	 * @return Object
-	 */
-	static public function getHelper($title)
-	{
-		if(!isset(self::$_helpers[$title]))
-		{
-			throw new Invenzzia_View_Exception('The helper "'.$title.'" does not exist.');
-		}
-		return self::$_helpers[$title];
-	} // end getHelper();
 } // end Invenzzia_View;

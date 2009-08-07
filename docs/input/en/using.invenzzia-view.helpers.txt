@@ -1,0 +1,70 @@
+Title: Helpers
+
+----
+
+In your views, it is often necessary to execute complex functions, operate on complex data sets or provide a convenient interface to manage them. You can use the view helpers to perform these behaviours for you. Contrary to the original helpers from Zend Framework, the OPL port helpers are optimized to work with Open Power Template 2 and its instructions.
+
+What is a helper?
+=================
+
+A helper is an object of a class that extends `Invenzzia_View_Helper_Abstract`. It is up to you, what it is going to do and what interface it should offer to the programmer and the template designer. Unsually, you would like to configure the OPT environment once the helper is registered and this can be done with the `initHelper()` method:
+
+~~~~
+[php]
+class MyHelper extends Invenzzia_View_Helper_Abstract
+{
+	public function initHelper()
+	{
+		Opt_View::setFormat('helper.myHelper', 'Objective', false);
+	} // end initHelper();
+} // end MyHelper;
+~~~~
+
+The helper objects are accessible through the `$helper.helperName` variable. In the example above, we inform the compiler that it should use the Objective data format for the helper data access.
+
+How to manage helpers?
+======================
+
+Before a helper could be used in a template, it must be registered within the port. The `Invenzzia_View_HelperBroker` class provides the helper management features. You can use it to register new helpers and retrieve the existing helper objects:
+
+~~~~
+[php]
+$helperBroker = Invenzzia_View_HelperBroker::getInstance();
+$helperBroker->addHelper('myHelper', new MyHelper);
+~~~~
+
+You can check for existing helpers or remove them with `hasHelper()` and `removeHelper()` methods:
+
+~~~~
+[php]
+if($helperBroker->hasHelper('someHelper'))
+{
+	$helperBroker->removeHelper('someHelper');
+}
+~~~~
+
+Using helpers in actions and views
+==================================
+
+Usually, the actions would like to use the helper interfaces to configure them. Below, you can find a sample action that uses one of the default helpers to set the page title:
+
+~~~~
+public function indexAction()
+{
+	// Get the "title" helper object
+	$title = Invenzzia_View_HelperBroker::getInstance()->title;
+	$title->prependTitle('Index');
+} // end indexAction();
+~~~~
+
+The layout template:
+
+~~~~
+[xml]
+<html>
+  <head>
+    <title>{u:$helper.title}</title>
+  </head>
+  ...
+</html>
+~~~~

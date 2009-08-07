@@ -4,8 +4,8 @@
 	<p>The title helper. <a parse:href="url('/helpers/index')">Back</a></p>
 
 	<p>Example 1 - direct access to the helper.</p>
-	<p>{$global.helper.title}</p>
+	<p>{$helper.title}</p>
 
 	<p>Example 2 - OPT-controller access.</p>
-	<p><opt:section name="title" datasource="$global.helper.title" str:separator=" / ">{$title}</opt:section></p>
+	<p><opt:section name="title" str:separator=" / ">{$title}</opt:section></p>
 </opt:root>

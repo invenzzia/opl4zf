@@ -12,5 +12,6 @@
 		<li><a parse:href="url('/helpers/navigationtree')">NavigationTree</a></li>
 
 		<li><a parse:href="url('/helpers/translate')">Translate</a></li>
+		<li><a parse:href="url('/helpers/flashmessage')">FlashMessage</a></li>
 	</ul>
 </opt:root>

@@ -4,7 +4,7 @@
 <opt:dtd template="xhtml10transitional" />
 <html>
 	<head>
-		<title>{$global.helper.title}</title>
+		<title>{$helper.title}</title>
 
 	</head>
 	<body>

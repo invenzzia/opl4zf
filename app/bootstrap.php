@@ -49,13 +49,19 @@ try
 	// startMvc() method.
 	$layout = Invenzzia_Layout::startMvc(array('compileMode' => Opt_Class::CM_REBUILD, 'stripWhitespaces'=> false));
 	$layout->setViewPaths(ROOT_DIR.'app/views/', ROOT_DIR.'cache/');
-	Invenzzia_View::getHelper('title')->appendTitle('Test');
+	Invenzzia_View_HelperBroker::getInstance()->title->appendTitle('Test');
+
+	// Set up the session
+	Zend_Session::start();
 
 	// Connect the layout to the Zend response.
 	$layout->setOutput($response);
 	$layout->setLayout('layout');
 
 	$front->dispatch();
+
+	// Close the session
+	Zend_Session::writeClose();
 }
 catch(Opt_Exception $exception)
 {

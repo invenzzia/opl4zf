@@ -15,7 +15,7 @@ public function fooAction()
 	$this->view->setTemplate('foobar.tpl');
 	
 	// Change the default placeholder
-	$this->layout->appendView($this->view, 'newPlaceholder');
+	Invenzzia_Layout::getMvcInstance()->appendView($this->view, 'newPlaceholder');
 } // end fooAction();
 ~~~~
 
@@ -34,7 +34,7 @@ To prepend the view to the beginning of a placeholder, we have to use the `Inven
 
 ~~~~
 [php]
-$this->layout->prependView($this->view, 'newPlaceholder');
+Invenzzia_Layout::getMvcInstance()->prependView($this->view, 'newPlaceholder');
 ~~~~
 
 Obtaining the layout view
@@ -50,22 +50,16 @@ $layoutView = $layout->getLayout();
 $layoutView->someVariable = 'foo';
 ~~~~
 
-Helper management
-=================
+Disabling the layout
+====================
 
-The view helpers in the port can be divided into three groups:
-
-+ Template-side helpers
-+ Action- and template-side helpers
-+ Zend_View helpers
-
-The first and the last group are handled directly by OPT, whereas the second one needs a support from the library API to be accessible from the action level. Invenzzia_Layout provides a centralized management for these helpers. The `Invenzzia_Layout::addHelper($name, $helper)` and `Invenzzia_Layout::getHelper($name)` can be used to register and obtain the helpers from the system:
+If we do not want to use the layout features, we may simply disable it:
 
 ~~~~
 [php]
 $layout = Invenzzia_Layout::getMvcInstance();
-$layout->addHelper('foo', new helperClass());
-
-$helper = $layout->getHelper('foo');
-$helper->doSomething();
+$layout->disableLayout();
 ~~~~
+
+> [warning]
+> If the layout is disabled, you must create action views and render them manually.

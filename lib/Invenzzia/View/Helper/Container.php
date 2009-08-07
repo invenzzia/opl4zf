@@ -19,7 +19,7 @@
  * @copyright Copyright (c) Invenzzia Group 2009
  * @license http://www.invenzzia.org/license/new-bsd New BSD License
  */
-class Invenzzia_View_Helper_Container implements IteratorAggregate, Countable
+class Invenzzia_View_Helper_Container extends Invenzzia_View_Helper_Abstract implements IteratorAggregate, Countable
 {
 	/**
 	 * The list of elements.
@@ -168,4 +168,13 @@ class Invenzzia_View_Helper_Container implements IteratorAggregate, Countable
 		}
 		return $output;
 	} // end _filterAttributes();
+
+	/**
+	 * Returns the data for OPT sections. Called by the data format.
+	 * @return Array
+	 */
+	public function toArray()
+	{
+		return $this->_elements;
+	} // end toArray();
 } // end Invenzzia_View_Helper_Container;
