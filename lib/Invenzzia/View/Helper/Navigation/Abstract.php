@@ -73,7 +73,7 @@ class Invenzzia_View_Helper_Navigation_Abstract extends Invenzzia_View_Helper_Ab
 	
 	/**
 	 * The properties accessible via getters and setters.
-	 * @var <type> 
+	 * @var Array
 	 */
 	protected $_accessibleValues = array(
 		'minDepth', 'maxDepth'		
@@ -153,6 +153,37 @@ class Invenzzia_View_Helper_Navigation_Abstract extends Invenzzia_View_Helper_Ab
 	{
 		return $this->_acl;
 	} // end getAcl();
+
+	/**
+	 * Sets the ACL role used by the ACL.
+	 *
+	 * @param Zend_Acl_Role_Interface|string $role The ACL role.
+	 * @throws Invenzzia_View_Exception
+	 * @return Invenzzia_View_Helper_Navigation_Abstract
+	 */
+	public function setRole($role)
+	{
+		if($role === null || is_string($role) || $role instanceof Zend_Acl_Role_Interface)
+		{
+			$this->_role = $role;
+		}
+		else
+		{
+			throw new Invenzzia_View_Exception('Invenzzia_View_Helper_Navigation_Abstract::setRole() accepts only
+				null values, strings or Zend_Acl_Role_Interface objects.');
+		}
+		return $this;
+	} // end setRole();
+
+	/**
+	 * Returns the current ACL role used in the rendering.
+	 *
+	 * @return Zend_Acl_Role_Interface|string
+	 */
+	public function getRole()
+	{
+		return $this->_role;
+	} // end getRole();
 
 	/**
 	 * Sets the invisible rendering state.

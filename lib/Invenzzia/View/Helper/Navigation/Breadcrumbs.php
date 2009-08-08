@@ -28,6 +28,14 @@ class Invenzzia_View_Helper_Navigation_Breadcrumbs extends Invenzzia_View_Helper
 	private $_separator = '';
 
 	/**
+	 * The properties accessible via getters and setters.
+	 * @var Array
+	 */
+	protected $_accessibleValues = array(
+		'minDepth', 'maxDepth', 'separator'
+	);
+
+	/**
 	 * Initializes the helper.
 	 * @param string $name The helper name given during the registration.
 	 */
@@ -55,19 +63,6 @@ class Invenzzia_View_Helper_Navigation_Breadcrumbs extends Invenzzia_View_Helper
 	{
 		return $this->_separator;
 	} // end getSeparator();
-
-	/**
-	 * A wrapper for some variables
-	 * @param string $name The property name.
-	 */
-	public function __get($name)
-	{
-		if($name == 'separator')
-		{
-			return $this->_separator;
-		}
-		return parent::__get($name);
-	} // end __get();
 
 	/**
 	 * Returns the auto-generated HTML for the breadcrumbs

@@ -3,3 +3,58 @@ Construct: helper
 
 ----
 
+The helper manages the flash messages.
+
+The idea
+========
+
+Web applications often want to inform the user about the success or failure of the actions. Displaying a full-page message is not too good, as the user may try to refresh the page, and moreover - he must click "OK" button to get back to the list of rows. Flash messages simplify this process. The row update action saves the message in the session and redirects the user immediately to the next page. There, the message is read from the session and displayed above the action content.
+
+The flashMessage helper provides a complete implementation for flash messages that allows the programmer to set the messages, redirect the user to other pages and control displaying them through a template engine.
+
+Action usage
+============
+
+In order to make the helper work, we need to have sessions initialized:
+
+~~~~
+[php]
+Zend_Session::start();
+
+// here the helper can be used
+
+Zend_Session::writeClose();
+~~~~
+
+The message is set with `setMessage()` method:
+
+~~~~
+[php]
+$flashMessage = Invenzzia_View_HelperBroker::getInstance()->flashMessage;
+$flashMessage->setMessage('The flash message.',
+	array('controller' => 'someController', 'action' => 'someAction'));
+~~~~
+
+The second argument specifies the new location, where the user should be redirected. The helper accepts both strings with the URL and the arrays, which are transparently converted to the URL-s with the current router. As a third argument, we may specify the route name for the router.
+
+> [information]
+> The redirect location is optional. If you do not specify it, the helper does not redirect the user to the new page and the current action continues the execution.
+
+By default, the helper uses the `flash` session namespace. You can change it with `setSessionNamespace()` method:
+
+~~~~
+[php]
+$flashMessage->setSessionNamespace('otherNamespace');
+~~~~
+
+Template usage
+==============
+
+It is very easy to display the flash message in the template:
+
+~~~~
+[xml]
+<p opt:if="$helper.flashMessage.hasMessage">{$helper.flashMessage.message}</p>
+~~~~
+
+The `$helper.flashMessage.hasMessage` variable contains **true**, if there is a flash message to display, and the message body can be retrieved from `$helper.flashMessage.message`.
