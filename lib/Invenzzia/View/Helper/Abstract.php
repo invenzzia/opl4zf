@@ -23,8 +23,10 @@ abstract class Invenzzia_View_Helper_Abstract
 	
 	/**
 	 * The method is executed during the helper registration.
+	 *
+	 * @param string $name The helper name given during the registration.
 	 */
-	public function initHelper()
+	public function initHelper($name)
 	{
 		/* null */
 	} // end initHelper();

@@ -66,4 +66,56 @@ class HelpersController extends Invenzzia_Controller_Action
 		/* null */
 	} // end flash2Action();
 
+	public function breadcrumbsAction()
+	{
+		$container = new Zend_Navigation(array(
+			array(
+				'label' => 'Index',
+				'controller' => 'helpers',
+				'id' => 'index'
+			),
+			array(
+				'label' => 'Helpers',
+				'controller' => 'helpers',
+				'id' => 'helpers',
+				'pages' => array(
+					array(
+						'label' => 'Breadcrumbs',
+						'controller' => 'helpers',
+						'action' => 'breadcrumbs',
+						'id' => 'breadcrumbs'
+					)
+				)
+			)
+		));
+		$breadcrumbs = Invenzzia_View_HelperBroker::getInstance()->breadcrumbs;
+		$breadcrumbs->setContainer($container);
+		$breadcrumbs->setSeparator(' / ');
+	} // end breadcrumbsAction();
+
+	public function navigationtreeAction()
+	{
+		$container = new Zend_Navigation(array(
+			array(
+				'label' => 'Index',
+				'controller' => 'index',
+				'id' => 'index'
+			),
+			array(
+				'label' => 'Helpers',
+				'controller' => 'helpers',
+				'id' => 'helpers',
+				'pages' => array(
+					array(
+						'label' => 'Breadcrumbs',
+						'controller' => 'helpers',
+						'action' => 'breadcrumbs',
+						'id' => 'breadcrumbs'
+					)
+				)
+			)
+		));
+		$navTree = Invenzzia_View_HelperBroker::getInstance()->navigationTree;
+		$navTree->setContainer($container);
+	} // end navigationtreeAction();
 } // end HelpersController;

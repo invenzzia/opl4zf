@@ -10,7 +10,7 @@
  * Copyright (c) 2009 Invenzzia Group <http://www.invenzzia.org>
  * and other contributors. See website for details.
  *
- * $Id: Url.php 11 2009-07-21 09:48:19Z zyxist $
+ * $Id$
  */
 
 /**
@@ -64,7 +64,7 @@ class Invenzzia_View_HelperBroker
 			throw new Invenzzia_View_Exception('The helper \''.$name.'\' is already registered.');
 		}
 		$this->_helpers[$name] = $helper;
-		$helper->initHelper();
+		$helper->initHelper($name);
 	} // end addHelper();
 
 	/**

@@ -10,7 +10,7 @@
  * Copyright (c) 2009 Invenzzia Group <http://www.invenzzia.org>
  * and other contributors. See website for details.
  *
- * $Id: Url.php 11 2009-07-21 09:48:19Z zyxist $
+ * $Id$
  */
 
 /**
@@ -29,10 +29,14 @@ class Invenzzia_View_Format_Default extends Opt_Compiler_Format
 		'section', 'variable', 'item'
 	);
 
+	/**
+	 * The properties of the data format.
+	 * @var Array
+	 */
 	protected $_properties = array(
-		'variable:assign' => false,
-		'item:assign' => false,
-		'section:itemAssign' => false
+		'variable:assign' => false,		// Disable the assign operator for variables
+		'item:assign' => false,			// Disable the assign operator for variable items
+		'section:itemAssign' => false	// Disable the assign operator for the section items
 	);
 
 	/**
@@ -45,6 +49,8 @@ class Invenzzia_View_Format_Default extends Opt_Compiler_Format
 	{
 		if($hookName == 'section:init')
 		{
+			// The section initializer, it forces the section to call the helper broker
+			// in order to get the data from the specified helper.
 			$section = $this->_getVar('section');
 
 			if(!is_object($this->_decorated))
@@ -53,18 +59,19 @@ class Invenzzia_View_Format_Default extends Opt_Compiler_Format
 			}
 
 			// It is used for certain section types only.
-			switch($section['name'])
+			$helperBroker = Invenzzia_View_HelperBroker::getInstance();
+			if($helperBroker->hasHelper($section['name']))
 			{
-				case 'headStyle':
-					return '$_sect'.$section['name'].'_vals = Opt_View::$_global[\'helper\']->headStyle->toArray(); ';
-				case 'headScript':
-					return '$_sect'.$section['name'].'_vals = Opt_View::$_global[\'helper\']->headScript->toArray(); ';
-				case 'title':
-					return '$_sect'.$section['name'].'_vals = Opt_View::$_global[\'helper\']->title->toArray(); ';
+				$helper = $helperBroker->getHelper($section['name']);
+				if(method_exists($helper, 'invenzziaSectionHook'))
+				{
+					return $helper->invenzziaSectionHook($section);
+				}
 			}
 		}
 		elseif($hookName == 'variable:main')
 		{
+			// The access to the 'helper' variable
 			$this->_applyVars = false;
 			$item = $this->_getVar('item');
 			if($item != 'helper')
@@ -76,6 +83,7 @@ class Invenzzia_View_Format_Default extends Opt_Compiler_Format
 		}
 		elseif($hookName == 'item:item')
 		{
+			// The access to the 'helper' variable subitems.
 			return '->'.$this->_getVar('item');
 		}
 	} // end _build();

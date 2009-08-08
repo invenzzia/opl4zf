@@ -10,7 +10,7 @@
  * Copyright (c) 2009 Invenzzia Group <http://www.invenzzia.org>
  * and other contributors. See website for details.
  *
- * $Id: Url.php 11 2009-07-21 09:48:19Z zyxist $
+ * $Id$
  */
 
 /**
@@ -40,6 +40,12 @@ class Invenzzia_View_Helper_Navigation_Abstract extends Invenzzia_View_Helper_Ab
      * @var int
      */
     protected $_maxDepth;
+
+    /**
+     * Do we render invisible pages?
+     * @var boolean
+     */
+    protected $_renderInvisible = true;
 
     /**
      * Translator
@@ -147,6 +153,24 @@ class Invenzzia_View_Helper_Navigation_Abstract extends Invenzzia_View_Helper_Ab
 	{
 		return $this->_acl;
 	} // end getAcl();
+
+	/**
+	 * Sets the invisible rendering state.
+	 * @param boolean $renderInvisible The new state
+	 */
+	public function setRenderInvisible($renderInvisible)
+	{
+		$this->_renderInvisible = $renderInvisible;
+	} // end setRenderInvisible();
+
+	/**
+	 * Gets the current state of rendering invisible pages.
+	 * @return boolean
+	 */
+	public function getRenderInvisible()
+	{
+		return $this->_renderInvisible;
+	} // end getRenderInvisible();
 
 	/**
 	 * Sets the translator object. The default argument value is null, it means
@@ -272,4 +296,53 @@ class Invenzzia_View_Helper_Navigation_Abstract extends Invenzzia_View_Helper_Ab
 		}
     } // end findActive();
 
+	/**
+	 * Determines, if the page could be accepted
+	 *
+	 * @param Zend_Navigation_Page $page The page to accept
+	 * @param boolean $recursive Do we perform a recursive check?
+	 * @return boolean
+	 */
+	public function accept(Zend_Navigation_Page $page, $recursive = true)
+	{
+		// Accept by default.
+		$accept = true;
+		if(!$page->isVisible(false) && !$this->_renderInvisible)
+		{
+			$accept = false;
+		}
+		if($this->_acl !== null && $this->_acceptAcl($page))
+		{
+			$accept = false;
+		}
+		// TODO: Add recursive check.
+		return $accept;
+	} // end accept();
+
+	/**
+	 * Determines if the page should be accepted by ACL.
+	 * 
+	 * @param Zend_Navigation_Page $page The page to accept.
+	 */
+	protected function _acceptAcl(Zend_Navigation_Page $page)
+	{
+		$resource = $page->getResource();
+		$privilege = $page->getPrivilege();
+
+		if($resource || $privilege)
+		{
+			return $this->_acl->isAllowed($this->_role, $resource, $privilege);
+		}
+		return true;
+	} // end _acceptAcl();
+
+	/**
+	 * The hook for the Invenzzia data format
+	 * @param Array $section The section data
+	 * @return String
+	 */
+	public function invenzziaSectionHook($section)
+	{
+		return '$_sect'.$section['name'].'_vals = Opt_View::$_global[\'helper\']->'.$section['name'].'->toArray(); ';
+	} // end invenzziaSectionHook();
 } // end Invenzzia_View_Helper_Navigation_Abstract;

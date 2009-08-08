@@ -10,7 +10,7 @@
  * Copyright (c) 2009 Invenzzia Group <http://www.invenzzia.org>
  * and other contributors. See website for details.
  *
- * $Id: HeadScript.php 11 2009-07-21 09:48:19Z zyxist $
+ * $Id$
  */
 
 /**
@@ -34,10 +34,11 @@ class Invenzzia_View_Helper_FlashMessage extends Invenzzia_View_Helper_Abstract
 
 	/**
 	 * Initializes the helper.
+	 * @param string $name The helper name given during the registration.
 	 */
-	public function initHelper()
+	public function initHelper($name)
 	{
-		Opt_View::setFormatGlobal('helper.flashMessage', 'Objective', false);
+		Opt_View::setFormatGlobal('helper.'.$name, 'Objective', false);
 	} // end initHelper();
 
 	/**

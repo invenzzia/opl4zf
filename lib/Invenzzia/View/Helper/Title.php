@@ -34,10 +34,11 @@ class Invenzzia_View_Helper_Title extends Invenzzia_View_Helper_Abstract
 
 	/**
 	 * Initializes the helper.
+	 * @param string $name The helper name given during the registration.
 	 */
-	public function initHelper()
+	public function initHelper($name)
 	{
-		Opt_View::setFormatGlobal('title', 'InvenzziaDefault/Array', false);
+		Opt_View::setFormatGlobal($name, 'InvenzziaDefault/Array', false);
 	} // end initHelper();
 
 	/**
@@ -119,4 +120,14 @@ class Invenzzia_View_Helper_Title extends Invenzzia_View_Helper_Abstract
 	{
 		return $this->_title;
 	} // end toArray();
+
+	/**
+	 * The hook for the Invenzzia data format
+	 * @param Array $section The section data
+	 * @return String
+	 */
+	public function invenzziaSectionHook($section)
+	{
+		return '$_sect'.$section['name'].'_vals = Opt_View::$_global[\'helper\']->'.$section['name'].'->toArray(); ';
+	} // end invenzziaSectionHook();
 } // end Invenzzia_View_Helper_Title;

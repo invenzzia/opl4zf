@@ -56,6 +56,8 @@ class Invenzzia_View
 		$helperBroker->addHelper('headScript', new Invenzzia_View_Helper_HeadScript);
 		$helperBroker->addHelper('headStyle', new Invenzzia_View_Helper_HeadStyle);
 		$helperBroker->addHelper('flashMessage', new Invenzzia_View_Helper_FlashMessage);
+		$helperBroker->addHelper('breadcrumbs', new Invenzzia_View_Helper_Navigation_Breadcrumbs);
+		$helperBroker->addHelper('navigationTree', new Invenzzia_View_Helper_Navigation_NavigationTree);
 
 		Opt_View::assignGlobal('helper', $helperBroker);
 		Opt_View::setFormatGlobal('helper', 'InvenzziaDefault', false);
