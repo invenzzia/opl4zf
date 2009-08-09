@@ -51,7 +51,10 @@ class Invenzzia_View_Functions
 		// Nice string "/controller/action?name=val&name=val..."
 			$data = parse_url($args);
 			$items = array();
-			parse_str($data['query'], $items);
+			if(isset($data['query']))
+			{
+				parse_str($data['query'], $items);
+			}
 			if($data['path'] != '')
 			{
 				$data = explode('/', $data['path']);
