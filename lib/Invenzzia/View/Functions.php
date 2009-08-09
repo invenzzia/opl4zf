@@ -27,10 +27,11 @@ class Invenzzia_View_Functions
 	 * The argument may be either an array of arguments or a string
 	 * that will be parsed by the function.
 	 *
+	 * @static
 	 * @param String|Array $args The router arguments
 	 * @return String
 	 */
-	public function url($args, $routeName = null)
+	static public function url($args, $routeName = null)
 	{
 		$router = Zend_Controller_Front::getInstance()->getRouter();
 		if(is_array($args))
