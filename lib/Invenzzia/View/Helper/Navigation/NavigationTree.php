@@ -38,6 +38,11 @@ class Invenzzia_View_Helper_Navigation_NavigationTree extends Invenzzia_View_Hel
 	 */
 	public function toArray()
 	{
+		if(!$this->_container instanceof Zend_Navigation_Container)
+		{
+			return array();
+		}
+
 		$iterator = new RecursiveIteratorIterator($this->_container, RecursiveIteratorIterator::SELF_FIRST);
 
 		if(is_int($this->_maxDepth))
@@ -54,7 +59,7 @@ class Invenzzia_View_Helper_Navigation_NavigationTree extends Invenzzia_View_Hel
 			$isActive = $page->isActive(true);
 
 			// Pages not accepted or below the minimum depth are not displayed.
-			if($depth < $minDepth || !$this->accept($page))
+			if($depth < $this->_minDepth || !$this->accept($page))
 			{
 				continue;
 			}

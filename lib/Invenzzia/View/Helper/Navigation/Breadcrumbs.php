@@ -94,6 +94,11 @@ class Invenzzia_View_Helper_Navigation_Breadcrumbs extends Invenzzia_View_Helper
 	 */
 	public function toArray()
 	{
+		if(!$this->_container instanceof Zend_Navigation_Container)
+		{
+			return array();
+		}
+
 		if(!$active = $this->findActive($this->_container))
 		{
 			return array();
