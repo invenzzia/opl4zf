@@ -1,0 +1,19 @@
+Title: url()
+Construct: function
+Reference: url(mixed $parameters [, string $routeName = null ])
+Arguments:
+ - Name: $parameters | EType: array|string | Desc: The router arguments
+ - Name: $routeName | EType: string | Desc: The optional route name
+Returns: The URL constructed from the parameters
+
+----
+
+This function is a wrapper for the router. The parameter list can be either an array or a string with the arguments:
+
+~~~~
+[xml]
+<p>{url($arguments)}</p>
+<p>{url('/some-controller/some-action?otherArg='~$otherArgValue)}</p>
+~~~~
+
+Optionally, you can specify the route name as a second argument.

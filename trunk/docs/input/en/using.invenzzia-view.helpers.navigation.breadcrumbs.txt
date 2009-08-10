@@ -1,0 +1,51 @@
+Title: breadcrumbs
+Construct: helper
+SeeAlso:
+ - using.invenzzia-view.helpers.navigation.navigation-tree
+
+----
+
+The helper displays the breadcrumbs from a `Zend_Navigation` container.
+
+The idea
+========
+
+Breadcrumbs give the users a way to keep track of their location within a website. They are usually displayed in a form of a horizontal bar, showing the most general parts of the website on the left, and the currently viewed document on the right, for example:
+
+~~~~
+Example.com / Articles / Technology / Using Zend Framework with OPL
+~~~~
+
+This helper uses the `Zend_Navigation` component to recognize the application structure, determine, which page is currently displayed and provide a path from the website root page to it.
+
+Action usage
+============
+
+The basic configuration of the helper is described in [Navigation helpers][using.invenzzia-view.helpers.navigation]. The breadcrumb helper extends it with setting the item separator:
+
+~~~~
+[php]
+$breadcrumbs->setSeparator(' / ');
+~~~~
+
+Template usage
+==============
+
+The breadcrumb bar can be generated automatically:
+
+~~~~
+[xml]
+<p>{u:$helper.breadcrumbs}</p>
+~~~~
+
+You may also take the control over the process with the `breadcrumbs` section to use website-specific HTML code:
+
+~~~~
+[xml]
+<opt:selector name="breadcrumbs" str:separator=" / ">
+	<opt:current>{$breadcrumbs.label}</opt:current>
+	<opt:default><a parse:href="$breadcrumbs.attr.href">{$breadcrumbs.label}</a></opt:default>
+</opt:selector>
+~~~~
+
+The `$breadcrumbs.attr` container contains a list of link attributes. If you wish to display them all, you may use `opt:attributes-build` attribute.

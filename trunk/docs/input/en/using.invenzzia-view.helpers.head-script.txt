@@ -1,0 +1,165 @@
+Title: headScript
+Construct: helper
+SeeAlso:
+ - using.invenzzia-view.helpers.head-style
+
+----
+
+Manages the list of the scripts loaded by the browser while rendering the page.
+
+Action usage
+============
+
+The helper allows the actions to add external and inline scripts with a simple interface:
+
+~~~~
+[php]
+$headScript = Invenzzia_View_HelperBroker::getInstance()->headScript;
+$headScript->appendFile('script.js');
+$headScript->appendScript('document.write(\'foo\');');
+~~~~
+
+Similar functions, `prependFile()` and `prependScript()` prepend the scripts to the internal script list making them appear in the first place. The programmer may also use `offsetSetScript()` and `offsetSetFile()`, where we specify the script location manually:
+
+~~~~
+[php]
+$headScript = Invenzzia_View_HelperBroker::getInstance()->headScript;
+$headScript->appendFile('script1.js');
+$headScript->appendFile('script2.js');
+$headScript->offsetSetFile(1, 'script3.js');
+
+/* produces:
+script1.js
+script3.js
+script2.js
+~~~~
+
+If the specified script already exists on the list, it is replaced on the original position, so it is not possible to add the same file twice.
+
+By default, the helper assumes that the registered scripts are JavaScript documents. You can control the content-type of the registered script with the optional, second argument:
+
+~~~~
+[php]
+$headScript->appendFile('script.vb', 'text/vbscript');
+~~~~
+
+Another optional argument allows to set extra `<script>` tag attributes:
+
+~~~~
+[php]
+$headScript->appendFile('script.vb', 'text/vbscript', array('charset' => 'utf-8'));
+~~~~
+
+Normally, the helper accepts only the attributes that are allowed by HTML format: `type`, `charset`, `defer`, `language` and `src` and the others are ignored. However, some scripts may use arbitrary attributes for their own purposes. In order to unlock them, you can use the following code:
+
+~~~~
+[php]
+$headScript->setAllowArbitraryAttributes(true);
+~~~~
+
+Template use
+============
+
+On the template-side, you can let the helper to generate the necessary HTML code or take over the control over this process. The template below shows these two cases:
+
+~~~~
+[xml]
+<head>
+  <!-- automatic code generation -->
+  {u:$helper.headScript}
+  
+  <!-- manual control -->
+  <opt:selector name="headScript">
+	<opt:file>
+		<script opt:attributes-build="$headScript.attributes" />
+	</opt:file>
+	<opt:script>
+		<script opt:attributes-build="$headScript.attributes"><opt:literal type="comment_cdata">
+		{u:$headScript.script}
+		</opt:literal></script>
+	</opt:script>
+  </opt:selector>
+</head>
+~~~~
+
+With the `opt:attributes-ignore` attribute, you can filter the unwanted attributes on the template-side. For details, see the Open Power Template user manual.
+
+> [error]
+> Remember to disable the HTML escaping when displaying the contents of `$helper.headScript` with the **u:** modifier.
+
+Script groups
+=============
+
+Manual control over the script rendering process is not useful for the debug purposes only. The feature that is available only here, are the script groups. Basically speaking, you define the scripts to be loaded in the templates and give them simple identifiers. The actions use these identifiers to inform, what script group they want to use:
+
+~~~~
+[php]
+$headScript->appendGroup('jslib');
+~~~~
+
+The template:
+
+~~~~
+[xml]
+<head>
+  <opt:selector name="headScript">
+	<!-- the "jslib" group -->
+	<opt:jslib>
+		<script type="jslib.js" type="text/javascript" />
+		<script type="jslib_widgets.js" type="text/javascript" />
+	</opt:jslib>
+	<!-- the standard groups -->
+	<opt:file>
+		<script opt:attributes-build="$headScript.attributes" />
+	</opt:file>
+	<opt:script>
+		<script opt:attributes-build="$headScript.attributes"><opt:literal type="comment_cdata">
+		{u:$headScript.script}
+		</opt:literal></script>
+	</opt:script>
+  </opt:selector>
+</head>
+~~~~
+
+The groups are defined as items in the selector. Such selector group can be saved into a snippet and reused in various layouts without any problems:
+
+~~~~
+[xml]
+<?xml version="1.0" ?>
+<opt:root>
+  <!-- snippets.tpl -->
+  <opt:snippet name="headScriptDefinition">
+	<!-- the "jslib" group -->
+	<opt:jslib>
+		<script type="jslib.js" type="text/javascript" />
+		<script type="jslib_widgets.js" type="text/javascript" />
+	</opt:jslib>
+	<!-- the standard groups -->
+	<opt:file>
+		<script opt:attributes-build="$headScriptDefinition.attributes" />
+	</opt:file>
+	<opt:script>
+		<script opt:attributes-build="$headScriptDefinition.attributes"><opt:literal type="comment_cdata">
+		{u:$headScriptDefinition.script}
+		</opt:literal></script>
+	</opt:script>
+  </opt:snippet>
+</opt:root>
+~~~~
+
+The layout template:
+
+~~~~
+[xml]
+<?xml version="1.0" ?>
+<opt:root include="snippets.tpl">
+<opt:prolog version="1.0" />
+<opt:dtd template="xhtml10transitional" />
+<html>
+  <head>
+    <opt:selector name="headScript" opt:use="headScriptDefinition" />
+  </head>
+  <!-- ... -->
+</html>
+</opt:root>
+~~~~
