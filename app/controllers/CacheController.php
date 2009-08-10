@@ -8,6 +8,10 @@
 
 class CacheController extends Invenzzia_Controller_Action
 {
+	/**
+	 * Demonstrates the integration of Zend_Cache with OPT with the
+	 * Invenzzia_Cache_Wrapper.
+	 */
 	public function cachedAction()
 	{
 		$frontendOptions = array(
@@ -17,6 +21,7 @@ class CacheController extends Invenzzia_Controller_Action
 
 		$backendOptions = array('cache_dir' => '../cache/');
 
+		// Wrap the caching object in the wrapper.
 		$this->view->setCache(new Invenzzia_Cache_Wrapper(Zend_Cache::factory('Output', 'File', $frontendOptions, $backendOptions)));
 	} // end cachedAction();
 

@@ -1,6 +1,8 @@
 <?php
 /**
- * A sample index controller.
+ * A sample index controller. Currently there's a little mess, but
+ * this will be improved in the near future to provide a nicer
+ * examples of use.
  *
  * @copyright Copyright (c) Invenzzia Group 2009
  * @license http://www.invenzzia.org/license/new-bsd New BSD License
@@ -8,6 +10,9 @@
 
 class IndexController extends Invenzzia_Controller_Action
 {
+	/**
+	 * The index action, shows the action forwarding.
+	 */
 	public function indexAction()
 	{
 		$title = Invenzzia_View_HelperBroker::getInstance()->title;
@@ -16,6 +21,10 @@ class IndexController extends Invenzzia_Controller_Action
 		$this->_forward('secondary');
 	} // end indexAction();
 
+	/**
+	 * Secondary action, shows the action forwarding and
+	 * appending views to another placeholder.
+	 */
 	public function secondaryAction()
 	{
 		$layout = Invenzzia_Layout::getMvcInstance();
@@ -25,11 +34,17 @@ class IndexController extends Invenzzia_Controller_Action
 		$this->_forward('third');
 	} // end secondaryAction();
 
+	/**
+	 * Final third action used in the forwarding demonstration.
+	 */
 	public function thirdAction()
 	{
 		$this->view->test = 'Bar';
 	} // end thirdAction();
 
+	/**
+	 * The action demonstrates Invenzzia_Form
+	 */
 	public function formAction()
 	{
 		$form = new testForm;
@@ -55,8 +70,17 @@ class IndexController extends Invenzzia_Controller_Action
 	} // end formAction();
 } // end IndexController;
 
+/**
+ * A test form used in the demonstration.
+ */
 class testForm extends Invenzzia_Form
 {
+	/**
+	 * Form constructor. Note that we do not set any decorators here,
+	 * as we are using OPT to define the element layout.
+	 * 
+	 * @param Array $options The form options.
+	 */
 	public function __construct( $options = null )
 	{
 		parent::__construct($options);

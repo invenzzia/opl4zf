@@ -69,6 +69,11 @@ class Invenzzia_ErrorHandler extends Opl_ErrorHandler
 		parent::display(new Invenzzia_Exception($e));
 	} // end displayZend();
 
+	/**
+	 * Shows the backtrace information from the packed exception.
+	 *
+	 * @param Exception $exception The exception to display.
+	 */
 	protected function _printBacktraceInfo($exception)
 	{
 		$trace = $exception->getOriginalException()->getTrace();
