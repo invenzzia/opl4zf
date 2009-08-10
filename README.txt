@@ -3,7 +3,7 @@
     OPEN POWER LIBS 2
         OFFICIAL ZEND FRAMEWORK PORT
     ================================
-                    Version 0.1-DEV
+                    Version 0.1.0
 
 Thank you for downloading Open Power Libs port for Zend Framework!
 This document contains the necessary information about the package.
@@ -25,8 +25,8 @@ SYSTEM REQUIREMENTS
 The package needs the following software in order to work
 properly:
 
- - Open Power Libs, at least 2.0-beta (available at [Invenzzia](http://www.invenzzia.org) )
- - Zend Framework 1.7 (available at [Zend.com](http://framework.zend.com) )
+ - Open Power Libs + Open Power Template, at least 2.0.1 (available at [Invenzzia](http://www.invenzzia.org) )
+ - Zend Framework 1.7 or newer (available at [Zend.com](http://framework.zend.com) )
 
 INSTALLATION
 ============
@@ -38,10 +38,10 @@ INSTALLATION
 VERSION INFORMATION
 ===================
 
-This is a development version of the port. Currently it replaces the default
-`Zend_Layout` and `Zend_View` implementation with OPT and integrates some
-services with it. We would be grateful if you tested it and sent us your
-suggestions and ideas.
+This is the first public release of the port and it may contain bugs. You
+can think of it like of a beta release. Within the 0.1 branch, we are going
+to fix the encountered bugs and problems only, whereas the new features
+will be developed in the 0.2 branch.
 
 AUTHORS AND LICENSE
 ===================
