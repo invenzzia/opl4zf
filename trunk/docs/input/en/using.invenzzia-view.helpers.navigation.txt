@@ -1,0 +1,99 @@
+Title: Navigation helpers
+
+----
+
+This group of helpers uses the `Zend_Navigation` component to display the navigation elements. They share a common action interface. In order to use the helpers, you need to define a website structure in the `Zend_Navigation` container and register it in the helpers:
+
+~~~~
+[php]
+$container = new Zend_Navigation(array(
+	array(
+		'label' => 'Index',
+		'controller' => 'index',
+		'action' => 'index'
+	),
+	array(
+		'label' => 'Articles',
+		'controller' => 'article',
+		'action' => 'index',
+		'pages' => array(
+			array(
+				'label' => 'Using Zend Framework with OPL',
+				'controller' => 'article',
+				'action' => 'list',
+				'params' => array('id' => 34)
+			)
+		)
+	)
+));
+
+$breadcrumbs = Invenzzia_View_HelperBroker::getInstance()->breadcrumbs;
+$breadcrumbs->setContainer($container);
+~~~~
+
+Using the helpers with Zend_Translate
+=====================================
+
+The helpers can be used with `Zend_Translate` to translate the page titles automatically to the specified language during the rendering process:
+
+~~~~
+[php]
+$translator = new Zend_Translate(...);
+
+$breadcrumbs->setTranslator($translator);
+~~~~
+
+Using the helpers with ACL
+==========================
+
+The helpers may automatically control, if the user is allowed to see the specified page. Such forbidden pages are skipped in the rendering process and are not presented to the user. In order to make use of it, we have to set the ACL object in the helper, define the role and save the information about the resources and privileges in the `Zend_Navigation` container:
+
+~~~~
+[php]
+$container = new Zend_Navigation(array(
+	array(
+		'label' => 'Index',
+		'controller' => 'index',
+		'action' => 'index',
+		'resource' => 'index',
+		'privilege' => 'view'
+	),
+	array(
+		'label' => 'Articles',
+		'controller' => 'article',
+		'action' => 'index',
+		'resource' => 'articles',
+		'privilege' => 'list'
+		'pages' => array(
+			array(
+				'label' => 'Using Zend Framework with OPL',
+				'controller' => 'article',
+				'action' => 'list',
+				'params' => array('id' => 34),
+				'resource' => 'articles',
+				'privilege' => 'view/34'
+			)
+		)
+	)
+));
+
+$acl = new Zend_Acl;
+
+$breadcrumbs = Invenzzia_View_HelperBroker::getInstance()->breadcrumbs;
+$breadcrumbs->setContainer($container);
+$breadcrumbs->setAcl($acl);
+$breadcrumbs->setRole('user');
+~~~~
+
+The role can be provided either as a string or object of `Zend_Acl_Role_Interface`.
+
+Specifying the minimum and maximum depth
+========================================
+
+You may limit the helpers to display only those pages that are within the minimum and maximum page tree depth limit:
+
+~~~~
+[php]
+$breadcrumbs->minDepth = 3;
+$breadcrumbs->maxDepth = 5;
+~~~~

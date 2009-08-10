@@ -1,0 +1,65 @@
+Title: Advanced use
+
+----
+
+Modifying the default action view settings
+==========================================
+
+The default action views are initialized to the `controllerName/actionName.tpl` file and assigned to the `content` placeholder. However, we may freely modify these settings:
+
+~~~~
+[php]
+public function fooAction()
+{
+	// Change the default template name
+	$this->view->setTemplate('foobar.tpl');
+	
+	// Change the default placeholder
+	Invenzzia_Layout::getMvcInstance()->appendView($this->view, 'newPlaceholder');
+} // end fooAction();
+~~~~
+
+The new placeholders do not need to be initialized, however they need to be displayed somewhere similarly to the default one, for example:
+
+~~~~
+[xml]
+<opt:section name="newPlaceholder">
+<div>
+	<opt:include from="newPlaceholder" />
+</div>
+</opt:section>
+~~~~
+
+To prepend the view to the beginning of a placeholder, we have to use the `Invenzzia_Layout::prependView()` method:
+
+~~~~
+[php]
+Invenzzia_Layout::getMvcInstance()->prependView($this->view, 'newPlaceholder');
+~~~~
+
+Obtaining the layout view
+=========================
+
+To assign the data to the main template, we need to have an access for the layout view object. It can be obtained directly from the layout manager:
+
+~~~~
+[php]
+$layout = Invenzzia_Layout::getMvcInstance();
+
+$layoutView = $layout->getLayout();
+$layoutView->someVariable = 'foo';
+~~~~
+
+Disabling the layout
+====================
+
+If we do not want to use the layout features, we may simply disable it:
+
+~~~~
+[php]
+$layout = Invenzzia_Layout::getMvcInstance();
+$layout->disableLayout();
+~~~~
+
+> [warning]
+> If the layout is disabled, you must create action views and render them manually.
