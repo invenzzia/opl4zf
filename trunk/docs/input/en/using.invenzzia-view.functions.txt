@@ -1,5 +1,0 @@
-Title: Functions
-
-----
-
-Invenzzia_View provides some extra functions for the template engine. They can be used like ordinary Open Power Template functions.

@@ -1,5 +1,0 @@
-Title: Appendix
-
-----
-
-Extra information about the project.

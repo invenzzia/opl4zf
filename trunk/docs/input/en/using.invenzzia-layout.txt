@@ -1,5 +1,0 @@
-Title: Invenzzia_Layout
-
-----
-
-*Invenzzia_Layout* is a complete replacement for the original *Zend_Layout* component, designed especially to work with Open Power Template 2 templates. Similarly to the original, it implements a classic Two Step View pattern, where the programmers may wrap the application content within another view. *Invenzzia_Layout* collects the action views and assigns it to one of the predefined placeholders. They may be rendered later in the other templates with the standard OPT instructions.

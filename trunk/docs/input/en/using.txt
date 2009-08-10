@@ -1,5 +1,0 @@
-Title: Using the port
-
-----
-
-Here we are going to show, how to use the port and its components.

@@ -1,5 +1,0 @@
-Title: Invenzzia_View
-
-----
-
-Invenzzia_View provides a set of extra helpers and the managing interface for them. The new helpers are sometimes reimplementations of original Zend_View helpers for Open Power Template 2 or completely new ideas.
