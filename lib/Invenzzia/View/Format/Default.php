@@ -87,4 +87,18 @@ class Invenzzia_View_Format_Default extends Opt_Compiler_Format
 			return '->'.$this->_getVar('item');
 		}
 	} // end _build();
+
+	/**
+	 * The action decorator.
+	 *
+	 * @param String $name Action name.
+	 */
+	public function action($name)
+	{
+		if(!is_object($this->_decorated))
+		{
+			throw new Opt_FormatNotDecorated_Exception('InvenzziaDefault');
+		}
+		$this->_decorated->action($name);
+	} // end action();
 } // end Opt_Compiler_Format;
