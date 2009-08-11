@@ -105,7 +105,10 @@ class Invenzzia_View_Helper_Navigation_Abstract extends Invenzzia_View_Helper_Ab
 			$name = '_'.$name;
 			$this->$name = $value;
 		}
-		throw new BadMethodCallException('Invalid Invenzzia_View_Helper_Navigation property: '.$name);
+		else
+		{
+			throw new BadMethodCallException('Invalid Invenzzia_View_Helper_Navigation property: '.$name);
+		}
 	} // end __set();
 
 	/**
