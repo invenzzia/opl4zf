@@ -15,7 +15,6 @@ set_include_path(get_include_path().PATH_SEPARATOR.ROOT_DIR.'lib/');
 $opl = parse_ini_file(ROOT_DIR.'app/paths.ini', true);
 
 // Load the autoloaders.
-require('Zend/Loader.php');
 require($opl['libraries']['Opl'].'Base.php');
 
 // Autoloader initialization
