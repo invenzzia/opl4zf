@@ -63,6 +63,7 @@ class Invenzzia_Form_Component implements Opt_Component_Interface
 			'label' => $formElement->getLabel(),
 			'description' => '',
 			'name' => $formElement->getName(),
+			'helperName' => substr($this->_formElement->helper, 4, strlen($this->_formElement->helper)-4),
 			'id' => 'f_'.$formElement->getName()
 		);
 
