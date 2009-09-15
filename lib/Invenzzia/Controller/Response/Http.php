@@ -51,7 +51,7 @@ class Invenzzia_Controller_Response_Http extends Zend_Controller_Response_Abstra
 			$this->_templateMode = $view->getMode();
 			ob_start();
 		}
-		elseif($this->_templateMode == Opt_Class::OPT_XML_MODE)
+		elseif($this->_templateMode == Opt_Class::XML_MODE)
 		{
 			throw new Opt_OutputOverloaded_Exception;
 		}
