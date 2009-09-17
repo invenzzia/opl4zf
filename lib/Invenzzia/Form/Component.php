@@ -63,7 +63,7 @@ class Invenzzia_Form_Component implements Opt_Component_Interface
 			'label' => $formElement->getLabel(),
 			'description' => '',
 			'name' => $formElement->getName(),
-			'helperName' => substr($this->_formElement->helper, 4, strlen($this->_formElement->helper)-4),
+			'helperName' => substr($formElement->helper, 4, strlen($formElement->helper)-4),
 			'id' => 'f_'.$formElement->getName()
 		);
 
@@ -153,6 +153,7 @@ class Invenzzia_Form_Component implements Opt_Component_Interface
 		{
 			$style = $this->_view->getTemplateVar('formStyle'.ucfirst($helper2).'Valid');
 		}
+		$attributes = array_merge($attributes, $this->_formElement->getAttribs());
 		if(!is_null($style) && !isset($attributes['class']))
 		{
 			$attributes['class'] = $style;
@@ -204,7 +205,8 @@ class Invenzzia_Form_Component implements Opt_Component_Interface
 	 */
 	public function manageAttributes($tagName, Array $attributes)
 	{
-		if($tagName == 'div' || $tagName == 'tr')
+		$splitted = explode('#', $tagName);
+		if($splitted[0] == 'div' || $splitted[0] == 'tr' || $splitted[1] == 'error')
 		{
 			if($this->_formElement->hasErrors())
 			{
@@ -216,5 +218,5 @@ class Invenzzia_Form_Component implements Opt_Component_Interface
 			}
 		}
 		return $attributes;
-	} // end createAttribute();
+	} // end manageAttributes();
 } // end Invenzzia_Form_Component;
