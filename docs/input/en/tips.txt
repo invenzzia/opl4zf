@@ -1,0 +1,5 @@
+Title: Tips and tricks
+
+----
+
+This chapter contains a list of useful tips and tricks and explains some commonly encountered problems.

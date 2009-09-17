@@ -1,0 +1,110 @@
+Title: Adding pagination
+
+----
+
+The port does not integrate the `Zend_Pagination` component with OPT, as OPL provides its own pagination class with Open Power Classes. Install this library and add it to your project directory tree similarly to OPT and OPL. 
+
+PHP part
+========
+
+The paginator is very simple to configure. We may use the global configuration in order to use the same settings in all views and controllers:
+
+~~~~
+[php]
+$opc = new Opc_Class;
+$opc->itemsPerPage = 30;
+$opc->paginatorDecorator = 'slider';
+$opc->paginatorDecoratorOptions = array(
+	'around' => 5,
+	'chunk' => 3
+);
+~~~~
+
+`itemsPerPage` controls, how many items will be displayed in one result page. `paginatorDecorator` selects the decorator which responds for how the list of pages will be presented. It may require some extra options specified with the `paginatorDecoratorOptions`. The exact list of available decorators and their options is described in the OPC documentation.
+
+> [help]
+> Each of this settings can be configured for a local instance of paginator independently from the global settings.
+
+In the controller, we create the paginator object and initialize it with the total number of items:
+
+~~~~
+[php]
+// Specify the number of items per page explicitely
+$paginator = Opc_Paginator::create($totalItems, $itemsPerPage);
+
+// Use the global setting
+$paginator = Opc_Paginator::create($totalItems);
+~~~~
+
+Then we have to pass **either** the currently viewed page **or** item offset from the request:
+
+~~~~
+[php]
+// Passing the page number
+$paginator->page = $this->getRequest()->getParam('page', 1);
+
+// Passing the offset
+$paginator->offset = $this->getRequest()->getParam('offset', 1);
+~~~~
+
+Then we can select the data from the database:
+
+~~~~
+[php]
+$results = $table->select()->limit($paginator->limit, $paginator->offset);
+~~~~
+
+Finally, we pass the paginator object to the view in order to render it:
+
+~~~~
+[php]
+$this->view->setFormat('paginator', 'Objective/Array');
+$this->view->setFormat('paginator.decorator', 'Objective');
+$this->view->paginator = $paginator;
+~~~~
+
+Template part
+=============
+
+Once the paginator is assigned to the view, we can configure its layout using the standard `opt:selector` instruction. Each element of the pagination list is defined as a separate "item" to display:
+
+~~~~
+[xml]
+<div class="pagination">
+<opt:selector name="paginator">
+		<opt:number> <a parse:href="url($url~'&page='~$pagination.number)">{$pagination.number}</a> </opt:number>
+		<opt:current> <strong>{$pagination.number}</strong> </opt:current>
+		<opt:gap> ... </opt:gap>
+</opt:selector>
+</div>
+~~~~
+
+The template assumes that the default URL is passed with the `$url` template variable. We concatenate it with the page number and pass to the router in order to form a valid URL. Note that you do not have to repeat this layout over and over in all your views that contain lists. Use snippets to store the paginator definition in one, common template and then simply insert it everywhere you need it:
+
+~~~~
+[xml]
+<opt:root>
+<!-- snippets.tpl -->
+
+	<opt:snippet name="pagination">
+		<opt:number> <a parse:href="url($url~'&page='~$pagination.number)">{$pagination.number}</a> </opt:number>
+		<opt:current> <strong>{$pagination.number}</strong> </opt:current>
+		<opt:gap> ... </opt:gap>
+	</opt:snippet>
+	
+</opt:root>
+~~~~
+
+The view template:
+
+~~~~
+[xml]
+<opt:root include="snippets.tpl">
+
+	...
+	
+	<div class="pagination">
+		<opt:selector name="paginator" opt:use="pagination" />
+	</div>
+</opt:root>
+~~~~

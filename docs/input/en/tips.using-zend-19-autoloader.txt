@@ -1,0 +1,55 @@
+Title: Using OPL port with ZF 1.9 autoloader
+
+----
+
+Prior to 1.9 version, Zend Framework provided a very simple autoloader that did not suit most of the needs. However, the newest release changes this situation and introduces a highly configurable autoloader. In this article we show the possible ways to handle the autoloading issue in this version.
+
+> [error]
+> Note that you cannot use the bare `Zend_Loader` to load Open Power Libs and Open Power Template files, as the file matching rule is more complex and the autoloader is not able to find some of the classes and interfaces.
+
+Do not use Zend_Loader
+======================
+
+The first way is simply not using the `Zend_Loader`. Open Power Libs autoloader does not have any problems with handling Zend Framework and other libraries that use the `Item_Subitem_Class` class naming convention. Unless you need the `Zend_Application` functionality, this is the recommended way.
+
+Combining ZF and OPL autoloaders
+================================
+
+Zend Framework 1.9 introduces the new component called `Zend_Application` which manages the bootstraping process. One of the default functionalitites is setting up the default Zend_Loader, but as we know - we cannot use it for OPL and OPT. The key to make the connection work is to initialize the OPL loader **before** the Zend one in `Bootstrap.php`:
+
+~~~~
+[php]
+<?php
+// Define path to application directory
+defined('APPLICATION_PATH')
+	|| define('APPLICATION_PATH',
+		realpath(dirname(__FILE__) . '/../application'));
+
+// Define application environment
+defined('APPLICATION_ENV')
+	|| define('APPLICATION_ENV',
+		(getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV')
+			: 'production'));
+
+/** Zend_Application */
+require_once 'Zend/Application.php';
+require_once 'Opl/Base.php';
+
+// Redirect unknown libraries to Zend Framework
+Opl_Loader::setHandleUnknownLibraries(false);
+Opl_Loader::register();
+
+// Create application, bootstrap, and run
+$application = new Zend_Application(
+	APPLICATION_ENV,
+	APPLICATION_PATH . '/configs/application.ini'
+);
+$application->bootstrap()->run();
+~~~~
+
+The paths and libraries for the OPL loader can be configured either in the `Bootstrap.php` file or one of the bootstraping resources.
+
+Future port releases
+====================
+
+Future releases of the port will contain a support for `Zend_Application` component.
