@@ -50,6 +50,8 @@ class Invenzzia_View
 		$opt->register(Opt_Class::PHP_FUNCTION, 'printf', 'sprintf');
 		$opt->register(Opt_Class::PHP_FUNCTION, 'url', 'Invenzzia_View_Functions::url');
 		$opt->register(Opt_Class::PHP_FUNCTION, 'zend', 'Invenzzia_View::getZendView');
+		$opt->register(Opt_Class::OPT_NAMESPACE, 'zf');
+		$opt->register(Opt_Class::OPT_INSTRUCTION, 'zf_form', 'Invenzzia_View_Instruction_Form');
 
 		$helperBroker = Invenzzia_View_HelperBroker::getInstance();
 		$helperBroker->addHelper('title', new Invenzzia_View_Helper_Title);
