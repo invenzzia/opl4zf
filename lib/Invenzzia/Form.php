@@ -42,7 +42,8 @@ class Invenzzia_Form extends Zend_Form
 		$view->assign('form', array(
 			'fields' => $fields,
 			'action' => $this->getAction(),
-			'method' => $this->getMethod()
+			'method' => $this->getMethod(),
+			'enctype' => $this->getEnctype()
 		));
 	} // end assignForm();
 
