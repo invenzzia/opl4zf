@@ -66,10 +66,12 @@ class Invenzzia_View_Helper_FlashMessage extends Invenzzia_View_Helper_Abstract
 		{
 			if(is_string($redirect))
 			{
+				Zend_Session::writeClose(false);
 				header('Location: '.$redirect);
 			}
 			elseif(is_array($redirect))
 			{
+				Zend_Session::writeClose(false);
 				$router = Zend_Controller_Front::getInstance()->getRouter();
 				if($routeName !== null)
 				{
