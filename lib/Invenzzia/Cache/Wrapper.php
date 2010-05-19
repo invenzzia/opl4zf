@@ -1,7 +1,6 @@
 <?php
 /*
  *  OPL PORT FOR ZEND FRAMEWORK <http://www.invenzzia.org>
- *  ======================================================
  *
  * This file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE. It is also available through
@@ -59,6 +58,4 @@ class Invenzzia_Cache_Wrapper implements Opt_Caching_Interface
 	{
 		$this->_cache->end();
 	} // end templateCacheStop();
-
-
 } // end Invenzzia_Cache_Wrapper;

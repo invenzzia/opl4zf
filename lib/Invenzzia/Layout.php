@@ -1,7 +1,6 @@
 <?php
 /*
  *  OPL PORT FOR ZEND FRAMEWORK <http://www.invenzzia.org>
- *  ======================================================
  *
  * This file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE. It is also available through
@@ -59,6 +58,12 @@ class Invenzzia_Layout
 	 */
 	private $_layoutName = 'layout';
 
+	/**
+	 * Re-throw exceptions or not?
+	 * @var boolean
+	 */
+	private $_throwExceptions = false;
+
 
 	/**
 	 * Initializes Invenzzia_Layout with MVC support.
@@ -81,7 +86,6 @@ class Invenzzia_Layout
 			Zend_Controller_Action_HelperBroker::removeHelper('layout');
 		}
 		
-		require_once('Invenzzia/Layout/Controller/Action/Helper.php');
 		Zend_Controller_Action_HelperBroker::addHelper(new Invenzzia_Layout_Controller_Action_Helper);
 
 		$front = Zend_Controller_Front::getInstance();
@@ -146,9 +150,9 @@ class Invenzzia_Layout
 
 	/**
 	 * Disables the layout services. The programmer must render the views
-	 * manually.
-	 *
-	 * @return Invenzzia_Layout
+	 * manually. Implements fluent interface.
+	 * 
+	 * @return Invenzzia_Layout Fluent interface.
 	 */
 	public function disableLayout()
 	{
@@ -158,9 +162,10 @@ class Invenzzia_Layout
 	} // end disableLayout();
 
 	/**
-	 * Enables the layout services.
+	 * Enables the layout services. Implements
+	 * fluent interface.
 	 *
-	 * @return Invenzzia_Layout
+	 * @return Invenzzia_Layout Fluent interface.
 	 */
 	public function enableLayout()
 	{
@@ -169,6 +174,32 @@ class Invenzzia_Layout
 
 		return $this;
 	} // end enableLayout();
+
+	/**
+	 * Allows to disable or enable throwing exceptions. If the
+	 * OPT exceptions are not thrown, the layout automatically captures
+	 * them and displays using the standard OPT error handler. Implements
+	 * fluent interface.
+	 *
+	 * @param boolean $state Throw exception state.
+	 * @return Invenzzia_Layout Fluent interface.
+	 */
+	public function setThrowExceptions($state)
+	{
+		$this->_throwExceptions = (boolean)$state;
+
+		return $this;
+	} // end setThrowExceptions();
+
+	/**
+	 * Returns the current throw exception state.
+	 *
+	 * @return boolean The current throw exception state.
+	 */
+	public function getThrowExceptions()
+	{
+		return $this->_throwExceptions;
+	} // end getThrowExceptions();
 
 	/**
 	 * Sets the paths to the view templates. The arguments are
@@ -329,8 +360,19 @@ class Invenzzia_Layout
 			}
 			$this->_layout->assign($name, $data);
 		}
-
-		$this->_output->render($this->_layout);
+		try
+		{
+			$this->_output->render($this->_layout);
+		}
+		catch(Opt_Exception $exception)
+		{
+			if($this->_throwExceptions)
+			{
+				throw $exception;
+			}
+			$h = new Opt_ErrorHandler;
+			$h->display($exception);
+		}
 
 		return true;
 	} // end render();

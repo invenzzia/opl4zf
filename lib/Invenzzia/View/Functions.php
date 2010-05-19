@@ -1,7 +1,6 @@
 <?php
 /*
  *  ZEND FRAMEWORK PORT FOR OPL <http://www.invenzzia.org>
- *  ======================================================
  *
  * This file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE. It is also available through
@@ -71,4 +70,36 @@ class Invenzzia_View_Functions
 			return $router->assemble($items, $routeName, false, true);
 		}
 	} // end url();
+
+	/**
+	 * Constructs a base URL for the specified link.
+	 *
+	 * @param string $link The link
+	 * @return string The base URL
+	 */
+	public function baseUrl($link)
+	{
+		return Invenzzia_View::getZendView()->baseUrl($link);
+	} // end baseUrl();
+
+	/**
+	 * A replacement for the currency() helper from Zend_View.
+	 *
+	 * @param number $amount The amount of money.
+	 * @param string $currency The currency name or NULL to use default.
+	 * @param int $precision The requested precision.
+	 * @return string The formatted currency
+	 */
+	public function currency($amount, $currency = null, $precision = 2)
+	{
+		$currency = Zend_Registry::get('currency');
+
+		$options = array('precision' => $precision);
+		if(is_string($currency))
+		{
+			$options['currency'] = $currency;
+		}
+
+		return $currency->toCurrency($amount, $options);
+	} // end baseUrl();
 } // end Invenzzia_View_Functions();

@@ -1,7 +1,6 @@
 <?php
 /*
  *  OPL PORT FOR ZEND FRAMEWORK <http://www.invenzzia.org>
- *  ======================================================
  *
  * This file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE. It is also available through
@@ -49,6 +48,8 @@ class Invenzzia_View
 		$opt->register(Opt_Class::OPT_FORMAT, 'InvenzziaDefault', 'Invenzzia_View_Format_Default');
 		$opt->register(Opt_Class::PHP_FUNCTION, 'printf', 'sprintf');
 		$opt->register(Opt_Class::PHP_FUNCTION, 'url', 'Invenzzia_View_Functions::url');
+		$opt->register(Opt_Class::PHP_FUNCTION, 'baseUrl', 'Invenzzia_View_Functions::baseUrl');
+		$opt->register(Opt_Class::PHP_FUNCTION, 'currency', 'Invenzzia_View_Functions::currency');
 		$opt->register(Opt_Class::PHP_FUNCTION, 'zend', 'Invenzzia_View::getZendView');
 		$opt->register(Opt_Class::OPT_NAMESPACE, 'zf');
 		$opt->register(Opt_Class::OPT_INSTRUCTION, 'zf_form', 'Invenzzia_View_Instruction_Form');

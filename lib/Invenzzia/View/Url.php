@@ -1,7 +1,6 @@
 <?php
 /*
  *  ZEND FRAMEWORK PORT FOR OPL <http://www.invenzzia.org>
- *  ======================================================
  *
  * This file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE. It is also available through
@@ -24,11 +23,19 @@ class Opt_Instruction_Url extends Opt_Compiler_Processor
 {
 	const ROUTING_FUNCTION = 'Invenzzia_View::getInstance()->url';
 
+	/**
+	 * Configures the instruction.
+	 */
 	public function configure()
 	{
 		$this->_addInstructions(array('opt:url'));
 	} // end configure();
 
+	/**
+	 * Processes the found OPT-XML node.
+	 *
+	 * @param Opt_Xml_Node $node The node.
+	 */
 	public function processNode(Opt_Xml_Node $node)
 	{
 		// Prevent from adding an attribute to OPT tags

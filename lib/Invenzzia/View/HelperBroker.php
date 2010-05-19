@@ -1,7 +1,6 @@
 <?php
 /*
  *  ZEND FRAMEWORK PORT FOR OPL <http://www.invenzzia.org>
- *  ======================================================
  *
  * This file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE. It is also available through
@@ -26,11 +25,6 @@ class Invenzzia_View_HelperBroker
 	 * @var Array
 	 */
 	private $_helpers;
-
-	private function __construct()
-	{
-
-	} // end __construct();
 
 	/**
 	 * Returns an instance of the helper broker.

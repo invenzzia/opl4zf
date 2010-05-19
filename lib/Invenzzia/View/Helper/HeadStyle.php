@@ -1,7 +1,6 @@
 <?php
 /*
  *  ZEND FRAMEWORK PORT FOR OPL <http://www.invenzzia.org>
- *  ======================================================
  *
  * This file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE. It is also available through
@@ -156,6 +155,7 @@ class Invenzzia_View_Helper_HeadStyle extends Invenzzia_View_Helper_Container
 	 * Prepends a new template script group to the script list. It can be used only
 	 * with template-based rendering.
 	 *
+	 * @throws Invenzzia_View_Exception
 	 * @param String $group The group name
 	 * @param Array $options Extra options
 	 */
@@ -173,6 +173,7 @@ class Invenzzia_View_Helper_HeadStyle extends Invenzzia_View_Helper_Container
 	 * Appends a new template script group to the script list. It can be used only
 	 * with template-based rendering.
 	 *
+	 * @throws Invenzzia_View_Exception
 	 * @param String $group The group name
 	 * @param Array $options Extra options
 	 */
